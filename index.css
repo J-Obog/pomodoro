@@ -1,6 +1,29 @@
-#timer {
-    border: 3px solid black;
-    padding: 5px; 
-    border-radius: 8px;
-    text-align: center;
+/** {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}*/
+
+.task {
+    
 }
+
+.container {
+    display: inline-block;
+    width: 40%;
+    margin: 5px;
+    vertical-align: top;
+}
+
+#timer {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 5px; 
+    text-align: center;
+    margin-bottom: 5px; 
+    margin-top: 5px; 
+}
+
+#time-display {
+    font-size: 5em;
+    font-weight: bolder;
+}
+

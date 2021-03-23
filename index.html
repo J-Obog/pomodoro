@@ -2,13 +2,31 @@
 <html>
     <head>
         <link rel="stylesheet" href="index.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+        <script src="index.js" defer></script>
     </head>
     <body>
-        <div>
-            <div style="width: 10%; justify-content: center">
-                <img src="pomo.png" height="50px">
+        <div class="container">
+            <img src="pomo.png" height="75px" width="75px">
+            <div>
                 <div id="timer">
-                    <span>00: 00 : 00</span>
+                    <span id="time-display">00 : 00</span>
+                </div>
+                <div>
+                    <button class="control-button">START</button>
+                    <button class="control-button">RESET</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div>
+                <div>
+                    <input id="add-task-input" placeholder="Task Name">
+                    <button id="add-task-btn">Add</button>
+                </div>
+                <div id="task-container">
+    
                 </div>
             </div>
         </div>
