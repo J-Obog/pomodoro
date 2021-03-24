@@ -1,19 +1,27 @@
-var taskList = []
-const PROGRESS_COLORS = ["red", "green", "blue"]
+var taskList = [];
+var timerOn = false;
+var currTask = -1;
+const PROGRESS_COLORS = ["red", "green", "blue"];
 
-function removeTask(taskNum) {
-    console.log(taskNum); 
+
+function removeTask(num) {
+    taskList.splice(num, 1);
+    renderTaskList();
 }
 
 function renderTaskList() {
-    taskList.forEach((task, idx)=> {
-        let div = $('<div></div>') 
-        .append($(`<p>${task.name}</p>`)
-        )
-
-        $("#task-container").append(div);
+    $("#task-container").empty(); 
+    taskList.forEach((task, idx) => {
+        $("#task-container").append(`
+        <div>
+            <span>${idx}</span>
+            <p>${task.name}</p>
+            <button>x</button>
+        </div>
+        `)
     })
 }
+
 
 $("#add-task-btn").click(function(e) {
     taskList.push({
