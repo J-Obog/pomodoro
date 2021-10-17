@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/J-Obog/pomoGOro/gormdb"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+  _ = gormdb.Connect()
+  fmt.Println("Successfully connected to database!")
 }
