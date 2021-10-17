@@ -6,17 +6,20 @@ import (
 
 	"github.com/J-Obog/pomoGOro/api"
 	"github.com/J-Obog/pomoGOro/mware"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
+
 
 func main() {
 	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
 	router.Use(mware.ReqLogger)
 	router.Use(mware.MimeTypeRes)
+	router.Use(handlers.CORS())
 
 	//configure api task routes
-	api.AddRoutes(router.PathPrefix("/api/tasks").Subrouter())
+	api.AddRoutes(router.PathPrefix("/api").Subrouter())
 
 	//spin up server
 	log.Println("Server running on port 8000")
