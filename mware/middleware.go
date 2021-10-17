@@ -16,7 +16,7 @@ func MimeTypeRes(next http.Handler) http.Handler {
 // middleware for logging requests
 func ReqLogger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r.RequestURI)
+		log.Println("<" + r.Method + "> " + r.RequestURI)
 		next.ServeHTTP(w, r)
 	})
 }
