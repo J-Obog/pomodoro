@@ -1,4 +1,4 @@
-package gormdb
+package api
 
 import (
 	"time"
