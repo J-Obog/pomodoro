@@ -5,11 +5,15 @@ import (
 	"net/http"
 
 	"github.com/J-Obog/pomoGOro/api"
+	"github.com/J-Obog/pomoGOro/mware"
 	"github.com/gorilla/mux"
 )
 
 func main() {
+	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
+	router.Use(mware.ReqLogger)
+	router.Use(mware.MimeTypeRes)
 
 	//configure api task routes
 	api.AddRoutes(router.PathPrefix("/api/tasks").Subrouter())
