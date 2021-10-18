@@ -12,6 +12,9 @@ import (
 
 
 func main() {
+	//make db migrations
+	MakeMigrations()
+
 	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
 	router.Use(mware.ReqLogger)
