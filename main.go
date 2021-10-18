@@ -10,6 +10,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func RenderIndexPage(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "text/html")
+	http.ServeFile(w, r, "static/index.html")
+}
 
 func main() {
 	//make db migrations
@@ -24,6 +28,9 @@ func main() {
 	//configure api task routes
 	api.AddRoutes(router.PathPrefix("/api").Subrouter())
 
+	//serving static html
+	router.HandleFunc("/", RenderIndexPage)
+	
 	//spin up server
 	log.Println("Server running on port 8000")
 	log.Fatal(http.ListenAndServe(":8000", router))
