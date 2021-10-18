@@ -45,7 +45,16 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 }	
 
 func RemoveTask(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+	
+	var task Task
+	db := gormdb.Connect()
+	// delete task with associated id
+	db.First(&task, id) 
+	db.Delete(&task)
 
+	w.WriteHeader(200)	
+	w.Write([]byte("Task successfully deleted"))
 }
 
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
