@@ -17,11 +17,16 @@ const TaskList = () => {
     }, [])
 
     return (
-        <div>
-            { tasks.map(task => (
-                    <Task key={task.id} {...task}/>
-                ))
-            }
+        <div className="bg-transparent flex flex-col justify-around">
+            <div className="bg-black text-white text-lg rounded-lg p-2">
+                <h1 className="text-white">Tasks</h1>
+            </div>
+            <div>
+                { tasks.map(task => (
+                        <Task key={task.id} {...task}/>
+                    ))
+                }
+            </div>
         </div>
     )
     
