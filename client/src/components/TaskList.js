@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react"; 
 import axios from "axios"; 
 import Task from "./Task"; 
-
+import NewTask from "./NewTask";
 
 const TaskList = () => {
     const [tasks, setTasks] = useState([]);
@@ -20,6 +20,9 @@ const TaskList = () => {
         <div className="bg-transparent flex flex-col justify-around">
             <div className="bg-black text-white text-lg rounded-lg p-2">
                 <h1 className="text-white">Tasks</h1>
+            </div>
+            <div>
+                <NewTask/>
             </div>
             <div>
                 { tasks.map(task => (
