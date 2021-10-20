@@ -20,10 +20,17 @@ func CreateNewTask(w http.ResponseWriter, r *http.Request) {
 
 	//add new tasks to db
 	db := gormdb.Connect()
-	db.Model(&Task{}).Create(&task)
+	db.Create(&task)
+
+	res, err := json.Marshal(task)
+	
+	if err != nil {
+		w.WriteHeader(500)
+		return
+	}
 
 	w.WriteHeader(200)
-	w.Write([]byte("Task successfully created"))
+	w.Write(res)
 }	
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {

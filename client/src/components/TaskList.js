@@ -5,7 +5,7 @@ import NewTask from "./NewTask";
 
 const TaskList = () => {
     const [tasks, setTasks] = useState([]);
-
+    
     useEffect(() => {
         axios.get("http://localhost:8000/api/tasks")
         .then(({data}) => {
@@ -16,13 +16,18 @@ const TaskList = () => {
         })
     }, [])
 
+    const addTaskToList = (newTask) => {
+        const newList = tasks.concat(newTask);
+        setTasks(newList);
+    } 
+
     return (
         <div className="bg-transparent flex flex-col justify-around">
             <div className="bg-black text-white text-lg rounded-lg p-2">
                 <h1 className="text-white">Tasks</h1>
             </div>
             <div>
-                <NewTask/>
+                <NewTask dispatch={addTaskToList}/>
             </div>
             <div>
                 { tasks.map(task => (
