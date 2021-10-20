@@ -6,7 +6,7 @@ const NewTask = () => {
     const [description, setDescription] = useState(""); 
 
     const addNewTask = () => {
-        axios.post("http://localhost:8000/api/tasks", { title, description})
+        axios.post("http://localhost:8000/api/tasks", {title, description})
         .then(({data}) => {
             console.log(data); 
         })  
