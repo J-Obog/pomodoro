@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/J-Obog/pomoGOro/gormdb"
+	"github.com/J-Obog/pomodoro/gormdb"
 	"github.com/gorilla/mux"
 )
 

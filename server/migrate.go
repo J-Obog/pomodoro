@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/J-Obog/pomoGOro/api"
-	"github.com/J-Obog/pomoGOro/gormdb"
+	"github.com/J-Obog/pomodoro/api"
+	"github.com/J-Obog/pomodoro/gormdb"
 )
 
 func MakeMigrations() {

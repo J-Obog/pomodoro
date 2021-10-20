@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/J-Obog/pomoGOro/api"
-	"github.com/J-Obog/pomoGOro/mware"
+	"github.com/J-Obog/pomodoro/api"
+	"github.com/J-Obog/pomodoro/mware"
 	"github.com/gorilla/mux"
 )
 
@@ -23,5 +23,5 @@ func main() {
 	
 	//spin up server
 	log.Println("Server running on port 8000")
-	log.Fatal(http.ListenAndServe(":8000", mware.CORS(router))) //router rapped with CORS middleware
+	log.Fatal(http.ListenAndServe(":8000", mware.CORS(router))) //router wrapped with CORS middleware
 }
