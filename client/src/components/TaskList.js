@@ -26,6 +26,11 @@ const TaskList = () => {
         setTasks(newList);
     } 
 
+    const deleteTask = (data) => {
+        const newList = tasks.filter(task => { return (task.id != data.id) });
+        setTasks(newList);
+    }
+
     return (
         <div className="bg-transparent flex flex-col justify-around">
             <div className="bg-black text-white text-lg rounded-lg p-2">
@@ -38,6 +43,7 @@ const TaskList = () => {
                 { tasks.map(task => (
                         <Task key={task.id} {...task} 
                             dispatchEditTask={editTask}
+                            dispatchDeleteTask={deleteTask}
                         />
                     ))
                 }

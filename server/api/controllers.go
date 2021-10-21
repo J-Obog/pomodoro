@@ -60,8 +60,15 @@ func RemoveTask(w http.ResponseWriter, r *http.Request) {
 	db.First(&task, id) 
 	db.Delete(&task)
 
+	res, err := json.Marshal(task)
+
+	if err != nil {
+		w.WriteHeader(500)
+		return 
+	}
+
 	w.WriteHeader(200)	
-	w.Write([]byte("Task successfully deleted"))
+	w.Write(res)
 }
 
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
