@@ -16,8 +16,13 @@ const TaskList = () => {
         })
     }, [])
 
-    const addTaskToList = (newTask) => {
-        const newList = tasks.concat(newTask);
+    const editTask = (data) => {
+        const newList = tasks.map(task => { return (task.id == data.id) ? data : task });
+        setTasks(newList);  
+    }
+
+    const addTask = (data) => {
+        const newList = tasks.concat(data);
         setTasks(newList);
     } 
 
@@ -27,11 +32,13 @@ const TaskList = () => {
                 <h1 className="text-white">Tasks</h1>
             </div>
             <div>
-                <NewTask dispatch={addTaskToList}/>
+                <NewTask dispatchAddTask={addTask}/>
             </div>
             <div>
                 { tasks.map(task => (
-                        <Task key={task.id} {...task}/>
+                        <Task key={task.id} {...task} 
+                            dispatchEditTask={editTask}
+                        />
                     ))
                 }
             </div>

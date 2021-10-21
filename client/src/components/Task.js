@@ -9,6 +9,7 @@ const Task = (props) => {
         axios.put(`http://localhost:8000/api/tasks/${props.id}`, { title: title, completed: !complete })
         .then(({data}) => {
             setCompletion(!complete);
+            props.dispatchEditTask(data);
         })
         .catch(err => {
             console.error(err); 
