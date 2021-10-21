@@ -1,11 +1,26 @@
-import React from "react"; 
+import React, { useState } from "react"; 
 
-const Task = ({id, title, completed}) => {
+const Task = (props) => {
+    const [complete, setCompletion] = useState(props.complete); 
+    const [title, setTitle] = useState(props.title);
+
+    const toggle = () => {
+        setCompletion(!complete)
+    }   
+
     return (
-        <div className="bg-white rounded-lg p-2 mt-2 text-sm flex items-center justify-between">
-            <input type="checkbox" className="cursor-pointer"/>
-            <h1 className="font-bold">{title}</h1>
-            <button className="bg-red-500 text-white rounded-full h-5 w-5">x</button>
+        <div className="bg-white rounded-lg p-2 mt-2 font-bold text-sm flex items-center justify-between">
+           <div>
+               <span onClick={toggle} className={`rounded-md px-1 py-0.5 text-white text-xs ${(complete) ? "bg-green-400" : "bg-red-400"}`}>
+                   {(complete) ? "DONE" : "TO DO" }
+                </span>
+            </div>
+            <div>
+                <h1 className={`font-bold ${(complete) ? "line-through" : ""}`}>{title}</h1>
+            </div>
+            <div>
+
+            </div>
         </div>
     )
 }
