@@ -80,7 +80,14 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	//update task with associated id
 	db.First(&task,id)
 	db.Model(&task).Updates(body)
+
+	res, err := json.Marshal(task)
+
+	if err != nil {
+		w.WriteHeader(500)
+		return 
+	}
 		
 	w.WriteHeader(200)	
-	w.Write([]byte("Task successfully updated"))
+	w.Write(res)
 }

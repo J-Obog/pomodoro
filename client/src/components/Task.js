@@ -1,11 +1,18 @@
 import React, { useState } from "react"; 
+import axios from "axios"; 
 
 const Task = (props) => {
-    const [complete, setCompletion] = useState(props.complete); 
+    const [complete, setCompletion] = useState(props.completed); 
     const [title, setTitle] = useState(props.title);
 
     const toggle = () => {
-        setCompletion(!complete)
+        axios.put(`http://localhost:8000/api/tasks/${props.id}`, { title: title, completed: !complete })
+        .then(({data}) => {
+            setCompletion(!complete);
+        })
+        .catch(err => {
+            console.error(err); 
+        }) 
     }   
 
     return (
