@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/J-Obog/pomodoro/db"
 	"github.com/J-Obog/pomodoro/mware"
 	"github.com/J-Obog/pomodoro/tasksvc"
 	"github.com/gorilla/mux"
@@ -11,6 +12,9 @@ import (
 
 
 func main() {
+	//connect to database
+	db.Connect()
+
 	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
 	router.Use(mware.ReqLogger)

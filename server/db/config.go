@@ -5,7 +5,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func Connect() *gorm.DB {
+var DB *gorm.DB
+
+func Connect() {
 	dsn := "host=localhost user=postgres password=root port=5432 dbname=pdoro"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	
@@ -13,5 +15,5 @@ func Connect() *gorm.DB {
 		panic(err.Error())
 	}
 
-	return db
+	DB = db
 }

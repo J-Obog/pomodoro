@@ -19,8 +19,7 @@ func CreateNewTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//add new tasks to db
-	db := db.Connect()
-	db.Create(&task)
+	db.DB.Create(&task)
 
 	res, err := json.Marshal(task)
 	
@@ -37,8 +36,7 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	var tasks []Task
 
 	//get all tasks from db
-	db := db.Connect()
-	db.Find(&tasks)
+	db.DB.Find(&tasks)
 
 	res, err := json.Marshal(tasks)
 	
@@ -55,10 +53,10 @@ func RemoveTask(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	
 	var task Task
-	db := db.Connect()
+
 	// delete task with associated id
-	db.First(&task, id) 
-	db.Delete(&task)
+	db.DB.First(&task, id) 
+	db.DB.Delete(&task)
 
 	res, err := json.Marshal(task)
 
@@ -83,10 +81,9 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 	var task Task
 
-	db := db.Connect()
 	//update task with associated id
-	db.First(&task,id)
-	db.Model(&task).Updates(body)
+	db.DB.First(&task,id)
+	db.DB.Model(&task).Updates(body)
 
 	res, err := json.Marshal(task)
 
