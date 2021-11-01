@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/J-Obog/pomodoro/authsvc"
 	"github.com/J-Obog/pomodoro/db"
 	"github.com/J-Obog/pomodoro/tasksvc"
 	"github.com/gorilla/mux"
@@ -16,10 +17,11 @@ func main() {
 
 	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
-	router.Use(ReqLogger)
+	router.Use(RequestLogger)
 
-	//configure api task routes
+	//configure sub routers
 	tasksvc.AddRoutes(router.PathPrefix("/api/tasks").Subrouter())
+	authsvc.AddRoutes(router.PathPrefix("/api/auth").Subrouter())
 	
 	//spin up server
 	log.Println("Server running on port 8000")
