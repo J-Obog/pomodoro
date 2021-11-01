@@ -2,6 +2,6 @@ package usersvc
 
 type User struct {
 	ID       uint   `json:"id"`
-	email    string `json:"email"`
-	password string `json:"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
