@@ -1,4 +1,4 @@
-package mware
+package main
 
 import (
 	"log"
