@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/J-Obog/pomodoro/api"
 	"github.com/J-Obog/pomodoro/mware"
+	"github.com/J-Obog/pomodoro/tasksvc"
 	"github.com/gorilla/mux"
 )
 
@@ -16,7 +16,7 @@ func main() {
 	router.Use(mware.ReqLogger)
 
 	//configure api task routes
-	api.AddRoutes(router.PathPrefix("/api").Subrouter())
+	tasksvc.AddRoutes(router.PathPrefix("/api").Subrouter())
 	
 	//spin up server
 	log.Println("Server running on port 8000")

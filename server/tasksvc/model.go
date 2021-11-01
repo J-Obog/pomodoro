@@ -1,4 +1,4 @@
-package api
+package tasksvc
 
 type Task struct {
 	ID        uint   `json:"id"`

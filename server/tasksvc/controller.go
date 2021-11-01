@@ -1,4 +1,4 @@
-package api
+package tasksvc
 
 import (
 	"encoding/json"
