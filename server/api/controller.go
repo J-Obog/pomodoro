@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/J-Obog/pomodoro/gormdb"
+	"github.com/J-Obog/pomodoro/db"
 	"github.com/gorilla/mux"
 )
 
@@ -19,7 +19,7 @@ func CreateNewTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//add new tasks to db
-	db := gormdb.Connect()
+	db := db.Connect()
 	db.Create(&task)
 
 	res, err := json.Marshal(task)
@@ -37,7 +37,7 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	var tasks []Task
 
 	//get all tasks from db
-	db := gormdb.Connect()
+	db := db.Connect()
 	db.Find(&tasks)
 
 	res, err := json.Marshal(tasks)
@@ -55,7 +55,7 @@ func RemoveTask(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	
 	var task Task
-	db := gormdb.Connect()
+	db := db.Connect()
 	// delete task with associated id
 	db.First(&task, id) 
 	db.Delete(&task)
@@ -83,7 +83,7 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 	var task Task
 
-	db := gormdb.Connect()
+	db := db.Connect()
 	//update task with associated id
 	db.First(&task,id)
 	db.Model(&task).Updates(body)

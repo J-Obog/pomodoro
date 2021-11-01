@@ -1,4 +1,4 @@
-package gormdb
+package db
 
 import (
 	"gorm.io/driver/postgres"
@@ -6,7 +6,7 @@ import (
 )
 
 func Connect() *gorm.DB {
-	dsn := "host=localhost user=postgres password=root port=5432 dbname=gorm"
+	dsn := "host=localhost user=postgres password=root port=5432 dbname=pdoro"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	
 	if err != nil {

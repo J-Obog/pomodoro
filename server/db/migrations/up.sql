@@ -1,0 +1,6 @@
+CREATE TABLE tasks (
+    id SERIAL NOT NULL,
+    completed BOOLEAN NOT NULL DEFAULT FALSE,
+    title CHARACTER VARYING(255) NOT NULL,
+    PRIMARY KEY (id)
+);
