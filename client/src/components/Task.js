@@ -29,7 +29,7 @@ const Task = (props) => {
     return (
         <div className="bg-white rounded-lg p-2 mt-2 font-bold text-sm flex items-center justify-between">
            <div>
-               <span onClick={toggle} className={`rounded-md px-1 py-0.5 text-white text-xs ${(complete) ? "bg-green-400" : "bg-red-400"}`}>
+               <span onClick={toggle} className={`cursor-pointer rounded-md px-1 py-0.5 text-white text-xs ${(complete) ? "bg-green-400" : "bg-red-400"}`}>
                    {(complete) ? "DONE" : "TO DO" }
                 </span>
             </div>
