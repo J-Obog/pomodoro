@@ -6,8 +6,8 @@ import (
 
 
 func AddRoutes(r *mux.Router) {
-	r.HandleFunc("/tasks", CreateNewTask).Methods("POST")
-	r.HandleFunc("/tasks", GetAllTasks).Methods("GET")
-	r.HandleFunc("/tasks/{id}", RemoveTask).Methods("DELETE")
-	r.HandleFunc("/tasks/{id}", UpdateTask).Methods("PUT")
+	r.HandleFunc("/", CreateNewTask).Methods("POST")
+	r.HandleFunc("/", GetAllTasks).Methods("GET")
+	r.HandleFunc("/{id}", RemoveTask).Methods("DELETE")
+	r.HandleFunc("/{id}", UpdateTask).Methods("PUT")
 }
