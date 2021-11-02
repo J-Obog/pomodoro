@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/J-Obog/pomodoro/authsvc"
+	"github.com/J-Obog/pomodoro/auth"
 	"github.com/J-Obog/pomodoro/db"
-	"github.com/J-Obog/pomodoro/tasksvc"
-	"github.com/J-Obog/pomodoro/usersvc"
+	"github.com/J-Obog/pomodoro/task"
+	"github.com/J-Obog/pomodoro/user"
 	"github.com/gorilla/mux"
 )
 
@@ -21,9 +21,9 @@ func main() {
 	router.Use(RequestLogger)
 
 	//configure sub routers
-	tasksvc.AddRoutes(router.PathPrefix("/api/task").Subrouter())
-	authsvc.AddRoutes(router.PathPrefix("/api/auth").Subrouter())
-	usersvc.AddRoutes(router.PathPrefix("/api/user").Subrouter())
+	task.AddRoutes(router.PathPrefix("/api/task").Subrouter())
+	auth.AddRoutes(router.PathPrefix("/api/auth").Subrouter())
+	user.AddRoutes(router.PathPrefix("/api/user").Subrouter())
 	
 	//spin up server
 	log.Println("Server running on port 8000")

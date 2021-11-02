@@ -1,4 +1,4 @@
-package authsvc
+package auth
 
 import (
 	"encoding/json"
@@ -6,20 +6,31 @@ import (
 	"net/http"
 
 	"github.com/J-Obog/pomodoro/db"
-	"github.com/J-Obog/pomodoro/usersvc"
+	"github.com/J-Obog/pomodoro/user"
 	"github.com/go-playground/validator/v10"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func LogUserIn(w http.ResponseWriter, r *http.Request) {
+	var user user.User
 
+	if e := json.NewDecoder(r.Body).Decode(&user); e != nil {
+		w.WriteHeader(500) 
+		return
+	}
+
+	if e := db.DB.Where("email = ?", user.Email).First(&user).Error; e != nil {
+		w.WriteHeader(401) 
+		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Account with email does not exist"})
+		return
+	}
 }
 
 func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
-	var user usersvc.User
+	var user user.User
 
 	if e := validator.New().Struct(user); e != nil {
-		w.WriteHeader(503) 
+		w.WriteHeader(401) 
 		fmt.Println(e)
 		return
 	}

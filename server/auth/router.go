@@ -1,4 +1,4 @@
-package authsvc
+package auth
 
 import (
 	"github.com/gorilla/mux"
