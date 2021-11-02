@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -23,7 +24,7 @@ func Connect(cfg *DBConfig) {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	
 	if err != nil {
-		panic(err.Error())
+		log.Fatal("Failed to make connection to database")
 	}
 
 	DB = db

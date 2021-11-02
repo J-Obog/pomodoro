@@ -41,5 +41,5 @@ func main() {
 	
 	//spin up server
 	log.Println("Server running on port 8000")
-	log.Fatal(http.ListenAndServe(":8000", CORS(router))) //router wrapped with CORS middleware
+	log.Fatal(http.ListenAndServe(":" + os.Getenv("PORT"), CORS(router))) //router wrapped with CORS middleware
 }

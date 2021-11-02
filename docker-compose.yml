@@ -1,0 +1,10 @@
+version: "3.6"
+
+services: 
+  server:
+    container_name: "go-server"
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
