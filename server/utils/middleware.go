@@ -22,7 +22,6 @@ func CORS(next http.Handler) http.Handler {
 
 		// handle OPTIONS request
 		if r.Method == "OPTIONS" {
-			w.WriteHeader(200)
 			return
 		}
 

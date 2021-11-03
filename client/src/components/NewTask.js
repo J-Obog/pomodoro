@@ -5,7 +5,7 @@ const NewTask = (props) => {
     const [title, setTitle] = useState("");
 
     const addTask = () => {
-        axios.post("http://localhost:8000/api/tasks", { title: title })
+        axios.post("http://localhost:8000/api/task", { title: title })
         .then(({data}) => {
             props.dispatchAddTask(data); 
             setTitle("");

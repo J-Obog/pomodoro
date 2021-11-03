@@ -7,7 +7,7 @@ const TaskList = () => {
     const [tasks, setTasks] = useState([]);
     
     useEffect(() => {
-        axios.get("http://localhost:8000/api/tasks")
+        axios.get("http://localhost:8000/api/task")
         .then(({data}) => {
             setTasks(data);  
         })

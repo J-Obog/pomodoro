@@ -61,7 +61,6 @@ func LogUserIn(w http.ResponseWriter, r *http.Request) {
 		if accessToken == "" || refreshToken == "" {
 			w.WriteHeader(500)
 		} else {
-			w.WriteHeader(200) 
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"access_token": accessToken,
 				"refresh_token": refreshToken,
@@ -96,7 +95,6 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 	if e := db.DB.Create(&user).Error; e != nil {
 		w.WriteHeader(500)
 	} else {
-		w.WriteHeader(200)
 		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Registration successful"})
 	}
 }
@@ -107,7 +105,6 @@ func LogUserOut(w http.ResponseWriter, r *http.Request) {
 	if _, e := rcache.RS.SetEX(rcache.CTX, "token-" + jti, "", 1*time.Hour).Result(); e != nil {
 		w.WriteHeader(500)
 	} else {
-		w.WriteHeader(200)
 		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Logout successful"})
 	}
 }

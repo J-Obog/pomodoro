@@ -6,7 +6,7 @@ const Task = (props) => {
     const [title, setTitle] = useState(props.title);
 
     const toggle = () => {
-        axios.put(`http://localhost:8000/api/tasks/${props.id}`, { title: title, completed: !complete })
+        axios.put(`http://localhost:8000/api/task/${props.id}`, { title: title, completed: !complete })
         .then(({data}) => {
             setCompletion(!complete);
             props.dispatchEditTask(data);
@@ -17,7 +17,7 @@ const Task = (props) => {
     }   
 
     const deleteTask = () => {
-        axios.delete(`http://localhost:8000/api/tasks/${props.id}`)
+        axios.delete(`http://localhost:8000/api/task/${props.id}`)
         .then(({data}) => {
             props.dispatchDeleteTask(data); 
         })

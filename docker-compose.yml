@@ -1,6 +1,15 @@
 version: "3.6"
 
-services: 
+services:
+  client:
+    stdin_open: true
+    container_name: react-client
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+
   server:
     container_name: go-server
     build:
