@@ -6,9 +6,11 @@ import (
 	"os"
 
 	"github.com/J-Obog/pomodoro/auth"
+	rcache "github.com/J-Obog/pomodoro/cache"
 	"github.com/J-Obog/pomodoro/db"
 	"github.com/J-Obog/pomodoro/task"
 	"github.com/J-Obog/pomodoro/user"
+	apputils "github.com/J-Obog/pomodoro/utils"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
@@ -20,19 +22,27 @@ func main() {
 			log.Fatal("Failed to initialize dotenv configuration")
 		}
 	}
-
+	
 	//connect to database
 	db.Connect(&db.DBConfig{
-		Host: os.Getenv("DB_HOST"),
-		Username: os.Getenv("DB_USER"),
-		Password: os.Getenv("DB_PASSWORD"),
-		Port: os.Getenv("DB_PORT"),
-		Database: os.Getenv("DB_DBNAME"),
+		Host: os.Getenv("POSTGRES_HOST"),
+		Username: os.Getenv("POSTGRES_USER"),
+		Password: os.Getenv("POSTGRES_PASSWORD"),
+		Port: os.Getenv("POSTGRES_PORT"),
+		Database: os.Getenv("POSTGRES_DB"),
+	})
+
+	//connect to cache
+	rcache.Connect(&rcache.CacheConfig{
+		Host: os.Getenv("REDIS_HOST"),
+		Port: os.Getenv("REDIS_PORT"),
+		Database: os.Getenv("REDIS_DB"),
+		Password: os.Getenv("REDIS_PASSWORD"),
 	})
 
 	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
-	router.Use(RequestLogger)
+	router.Use(apputils.RequestLogger)
 
 	//configure sub routers
 	task.AddRoutes(router.PathPrefix("/api/task").Subrouter())
@@ -41,5 +51,5 @@ func main() {
 	
 	//spin up server
 	log.Println("Server running on port 8000")
-	log.Fatal(http.ListenAndServe(":" + os.Getenv("PORT"), CORS(router))) //router wrapped with CORS middleware
+	log.Fatal(http.ListenAndServe(":" + os.Getenv("APP_PORT"), apputils.CORS(router))) //router wrapped with CORS middleware
 }

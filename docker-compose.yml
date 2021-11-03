@@ -2,9 +2,24 @@ version: "3.6"
 
 services: 
   server:
-    container_name: "go-server"
+    container_name: go-server
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - 8000:8000
+
+  database:
+    container_name: pg-db
+    restart: always
+    environment: 
+      - POSTGRES_USER=postgres 
+      - POSTGRES_PASSWORD=root
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_container:/data/db
+
+volumes:
+  postgres_container:

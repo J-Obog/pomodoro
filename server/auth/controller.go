@@ -7,10 +7,12 @@ import (
 	"os"
 	"time"
 
+	rcache "github.com/J-Obog/pomodoro/cache"
 	"github.com/J-Obog/pomodoro/db"
 	"github.com/J-Obog/pomodoro/user"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-playground/validator/v10"
+	"github.com/gorilla/context"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -21,9 +23,11 @@ func CreateAuthToken(exp int64, sub uint) string {
 		IssuedAt: time.Now().Unix(),
 	})
 
-	tokenStr, e := token.SignedString(os.Getenv("JWT_SECRET_KEY"))
+	tokenStr, e := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
 	
-	if e != nil { return "" }
+	if e != nil {
+		return "" 
+	}
 	return tokenStr
 }
 
@@ -98,5 +102,12 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogUserOut(w http.ResponseWriter, r *http.Request) {
+	jti := context.Get(r, "jti").(string)
 
+	if _, e := rcache.RS.SetEX(rcache.CTX, "token-" + jti, "", 1*time.Hour).Result(); e != nil {
+		w.WriteHeader(500)
+	} else {
+		w.WriteHeader(200)
+		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Logout successful"})
+	}
 }
