@@ -23,22 +23,9 @@ func main() {
 		}
 	}
 	
-	//connect to database
-	db.Connect(&db.DBConfig{
-		Host: os.Getenv("POSTGRES_HOST"),
-		Username: os.Getenv("POSTGRES_USER"),
-		Password: os.Getenv("POSTGRES_PASSWORD"),
-		Port: os.Getenv("POSTGRES_PORT"),
-		Database: os.Getenv("POSTGRES_DB"),
-	})
-
-	//connect to cache
-	rcache.Connect(&rcache.CacheConfig{
-		Host: os.Getenv("REDIS_HOST"),
-		Port: os.Getenv("REDIS_PORT"),
-		Database: os.Getenv("REDIS_DB"),
-		Password: os.Getenv("REDIS_PASSWORD"),
-	})
+	//connect to postgres db and redis cache
+	db.Connect()
+	rcache.Connect()
 
 	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)

@@ -3,30 +3,22 @@ package db
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-type DBConfig struct {
-	Host string
-	Username string
-	Password string
-	Port string
-	Database string
-}
-
-
 var DB *gorm.DB
 
-func Connect(cfg *DBConfig) {
+func Connect() {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s", 
-						cfg.Host, 
-						cfg.Username, 
-						cfg.Password, 
-						cfg.Port, 
-						cfg.Database)
-						
+						os.Getenv("POSTGRES_HOST"), 
+						os.Getenv("POSTGRES_USER"), 
+						os.Getenv("POSTGRES_PASSWORD"), 
+						os.Getenv("POSTGRES_PORT"), 
+						os.Getenv("POSTGRES_DB"))
+
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	
 	if err != nil {

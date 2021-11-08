@@ -4,32 +4,26 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/go-redis/redis/v8"
 )
 
-type CacheConfig struct {
-	Host string
-	Password string
-	Port string
-	Database string
-}
-
 var CTX = context.Background()
 var RS *redis.Client
 
-func Connect(cfg *CacheConfig) {
-	dbnum, e := strconv.Atoi(cfg.Database)
+func Connect() {
+	dbn, e := strconv.Atoi(os.Getenv("REDIS_DB"))
 
 	if e != nil {
-		log.Fatal("Failed to connect to redis host")
+		log.Fatal(e.Error())
 	}
 
 	if rdb := redis.NewClient(&redis.Options{
-		Addr: fmt.Sprintf("%s:%s", cfg.Host, cfg.Port),
-		Password: cfg.Password,
-		DB: dbnum,
+		Addr: fmt.Sprintf("%s:%s", os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT")),
+		Password: os.Getenv("REDIS_PASSWORD"),
+		DB: dbn,
 	}); rdb == nil {
 		log.Fatal("Failed to connect to redis host")
 	} else {
