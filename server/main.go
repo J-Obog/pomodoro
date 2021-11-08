@@ -10,7 +10,7 @@ import (
 	"github.com/J-Obog/pomodoro/db"
 	"github.com/J-Obog/pomodoro/task"
 	"github.com/J-Obog/pomodoro/user"
-	apputils "github.com/J-Obog/pomodoro/utils"
+	apputil "github.com/J-Obog/pomodoro/util"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
@@ -42,7 +42,7 @@ func main() {
 
 	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
-	router.Use(apputils.RequestLogger)
+	router.Use(apputil.RequestLogger)
 
 	//configure sub routers
 	task.AddRoutes(router.PathPrefix("/api/task").Subrouter())
@@ -51,5 +51,5 @@ func main() {
 	
 	//spin up server
 	log.Println("Server running on port 8000")
-	log.Fatal(http.ListenAndServe(":" + os.Getenv("APP_PORT"), apputils.CORS(router))) //router wrapped with CORS middleware
+	log.Fatal(http.ListenAndServe(":" + os.Getenv("APP_PORT"), apputil.CORS(router))) //router wrapped with CORS middleware
 }

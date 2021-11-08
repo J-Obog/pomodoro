@@ -12,7 +12,6 @@ import (
 	"github.com/J-Obog/pomodoro/user"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-playground/validator/v10"
-	"github.com/gorilla/context"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -100,9 +99,9 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogUserOut(w http.ResponseWriter, r *http.Request) {
-	jti := context.Get(r, "jti").(string)
+	jti := r.Context().Value("jti")
 
-	if _, e := rcache.RS.SetEX(rcache.CTX, "token-" + jti, "", 1*time.Hour).Result(); e != nil {
+	if _, e := rcache.RS.SetEX(rcache.CTX, fmt.Sprintf("token-%s", jti), "", 1*time.Hour).Result(); e != nil {
 		w.WriteHeader(500)
 	} else {
 		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Logout successful"})

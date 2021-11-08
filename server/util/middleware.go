@@ -1,14 +1,15 @@
-package apputils
+package apputil
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	rcache "github.com/J-Obog/pomodoro/cache"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gorilla/context"
 )
 
 // middleware for handling CORS configs
@@ -54,14 +55,13 @@ func JwtRequired(next http.Handler) http.Handler {
 			w.WriteHeader(401)
 			json.NewEncoder(w).Encode(map[string]interface{}{"message": "Authorization token has expired"})
 		} else {
-			jti := token.Claims.(jwt.MapClaims)["jti"].(string)
-
-			if _, e := rcache.RS.Get(rcache.CTX, "token-" + jti).Result(); e == nil {
+			jti := token.Claims.(jwt.MapClaims)["jti"]
+			if _, e := rcache.RS.Get(rcache.CTX, fmt.Sprintf("token-%s", jti)).Result(); e == nil {
 				w.WriteHeader(401)
 				json.NewEncoder(w).Encode(map[string]interface{}{"message": "Invalid authorization token"})
 			} else {
-				context.Set(r, "jti", jti)
-				next.ServeHTTP(w, r)
+				ctx := context.WithValue(r.Context(), "jti", jti)
+				next.ServeHTTP(w, r.WithContext(ctx))
 			}
 		}
 

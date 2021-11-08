@@ -10,25 +10,27 @@ services:
     ports:
       - 3000:3000
 
-  server:
+  backend:
     container_name: go-server
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
       - 8000:8000
+    depends_on:
+      - db
 
-  database:
+  db:
+    image: postgres:latest
     container_name: pg-db
     restart: always
     environment: 
       - POSTGRES_USER=postgres 
-      - POSTGRES_PASSWORD=root
-    image: postgres:latest
+      - POSTGRES_PASSWORD=postgres
     ports:
       - 5432:5432
     volumes:
-      - postgres_container:/data/db
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  postgres_container:
+  pgdata:

@@ -20,7 +20,13 @@ type DBConfig struct {
 var DB *gorm.DB
 
 func Connect(cfg *DBConfig) {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s", cfg.Host, cfg.Username, cfg.Password, cfg.Port, cfg.Database)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s", 
+						cfg.Host, 
+						cfg.Username, 
+						cfg.Password, 
+						cfg.Port, 
+						cfg.Database)
+						
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	
 	if err != nil {
