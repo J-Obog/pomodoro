@@ -1,20 +1,16 @@
-import React from "react";
-import TaskList from "./components/TaskList"; 
-import Timer from "./components/Timer";
-import Time from "./context/TimeContext"; 
+import React from 'react';
+
+//routing
+import { Routes, BrowserRouter as Router } from 'react-router-dom'; 
+import { PublicRoute, PrivateRoute } from './components/common';
 
 function App() {
   return (
-    <Time>
-      <div className="timer-app flex h-screen">
-        <div className="w-4/5 m-3 flex flex-col items-center">
-          <Timer/>
-        </div>
-        <div className="w-1/5 m-3">
-          <TaskList/>
-        </div>
-      </div>
-    </Time>
+    <Router>
+      <Routes>
+        <PublicRoute path='/login' component={<><div></div></>} />
+      </Routes>
+    </Router>
   );
 }
 

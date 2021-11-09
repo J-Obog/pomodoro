@@ -10,83 +10,73 @@ import (
 
 
 func CreateNewTask(w http.ResponseWriter, r *http.Request) {
+	jti := r.Context().Value("jti")
+
 	var task Task
 	if e := json.NewDecoder(r.Body).Decode(&task); e != nil {
 		w.WriteHeader(500)
-		return
-	}
-
-	//add new tasks to db
-	if e := db.DB.Create(&task).Error; e != nil {
-		w.WriteHeader(500)
-		return
-	}
-
-	if res, e := json.Marshal(task); e != nil {
-		w.WriteHeader(500)
-		return
 	} else {
-		w.Write(res)
+		task.UserID = jti.(uint)
+
+		if e := db.DB.Create(&task).Error; e != nil {
+			w.WriteHeader(500)
+		} else {
+			if res, e := json.Marshal(task); e != nil {
+				w.WriteHeader(500)
+			} else {
+				w.Write(res)
+			}
+		}
 	}
 }	
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
+	jti := r.Context().Value("jti")
 	var tasks []Task
 
-	//get all tasks from db
-	if e := db.DB.Find(&tasks).Error; e != nil {
+	if e := db.DB.Find(&tasks, "user_id = ?", jti).Error; e != nil {
 		w.WriteHeader(500)
-		return
-	}
-
-	if res, e := json.Marshal(tasks); e != nil {
-		w.WriteHeader(500)
-		return
 	} else {
-		w.Write(res)
+		if res, e := json.Marshal(tasks); e != nil {
+			w.WriteHeader(500)
+		} else {
+			w.Write(res)
+		}
 	}
 }	
 
 func RemoveTask(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	
+	id := mux.Vars(r)["id"]	
 	var task Task
 
-	// delete task with associated id
-	if e := db.DB.First(&task, id).Delete(&task).Error; e != nil {
+	if e := db.DB.Delete(&task, id).Error; e != nil {
 		w.WriteHeader(500)
-		return 
-	}
-
-	if res, e := json.Marshal(task); e != nil {
-		w.WriteHeader(500)
-		return 
 	} else {
-		w.Write(res)
+		if res, e := json.Marshal(task); e != nil {
+			w.WriteHeader(500)
+		} else {
+			w.Write(res)
+		}
 	}
 }
 
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	var body map[string]interface{}
+	var task Task
 
 	if e := json.NewDecoder(r.Body).Decode(&body); e != nil {
 		w.WriteHeader(500)
 		return 
-	}
-
-	var task Task
-
-	//update task with associated id
-	if e := db.DB.First(&task,id).Updates(body).Error; e != nil {
-		w.WriteHeader(500)
-		return
-	}
-
-	if res, e := json.Marshal(task); e != nil {
-		w.WriteHeader(500)
-		return 
 	} else {
-		w.Write(res)
+		if e := db.DB.First(&task, id).Updates(body).Error; e != nil {
+			w.WriteHeader(500)
+		} else {
+			if res, e := json.Marshal(task); e != nil {
+				w.WriteHeader(500) 
+			} else {
+				w.Write(res)
+			}
+		}
 	}
 }
