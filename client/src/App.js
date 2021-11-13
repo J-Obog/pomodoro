@@ -1,16 +1,19 @@
 import React from 'react';
 
-//routing
-import { Routes, BrowserRouter as Router } from 'react-router-dom'; 
+import { Routes, Route, BrowserRouter} from 'react-router-dom'; 
 import { PublicRoute, PrivateRoute } from './components/common';
+
+import { Dashboard, Login, Register } from './pages'; 
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <PublicRoute path='/login' component={<><div></div></>} />
+        <Route exact path='/login' element={<PublicRoute component={Login}/>}/>
+        <Route exact path='/register' element={<PublicRoute component={Register}/>}/>
+        <Route exact path='/' element={<PrivateRoute component={Dashboard}/>}/>
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 

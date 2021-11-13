@@ -17,7 +17,7 @@ const TaskList = () => {
     }, [])
 
     const editTask = (data) => {
-        const newList = tasks.map(task => { return (task.id == data.id) ? data : task });
+        const newList = tasks.map(task => { return (task.id === data.id) ? data : task });
         setTasks(newList);  
     }
 
@@ -27,7 +27,7 @@ const TaskList = () => {
     } 
 
     const deleteTask = (data) => {
-        const newList = tasks.filter(task => { return (task.id != data.id) });
+        const newList = tasks.filter(task => { return (task.id !== data.id) });
         setTasks(newList);
     }
 

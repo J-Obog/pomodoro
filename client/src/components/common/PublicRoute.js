@@ -1,10 +1,13 @@
 import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-const PublicRoute = ({ component: Component, restricted, ...rest }) => {
+const PublicRoute = ({ component: Component }) => {
+  const isAuth = false; 
+   
   return (
-    <Route {...rest} render={(props) => false && restricted ? <Navigate to='/' /> : <Component {...props} /> }/>
+      !isAuth ? <Component/> : <Navigate to='/'/>
   )
 };
+
 
 export default PublicRoute;
