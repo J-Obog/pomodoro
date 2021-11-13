@@ -57,9 +57,10 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	if e := validator.New().Struct(user); e != nil {
 		w.WriteHeader(401) 
+		fmt.Println(e.Error())
+		json.NewEncoder(w).Encode(map[string]interface{}{"errors": ""})
 	} else {
 		if hash, e := bcrypt.GenerateFromPassword([]byte(user.Password), 10); e != nil {
 			w.WriteHeader(500)
