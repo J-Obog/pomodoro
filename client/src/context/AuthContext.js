@@ -4,15 +4,15 @@ import axios from 'axios';
 export const AuthContext = createContext(null); 
 
 const Auth = ({children}) => {
-    const [access, setAccessToken] = useState(localStorage.getItem('auth-access'));  
-    const [refresh, setRefreshToken] = useState(localStorage.getItem('auth-refresh'));
+    const [access, setAccessToken] = useState(localStorage.getItem(process.env.REACT_APP_ACCESSTK_KEY));  
+    const [refresh, setRefreshToken] = useState(localStorage.getItem(process.env.REACT_APP_REFRESHTK_KEY));
     const [authenticated, setAuthenticated] = useState(false);
     
     useEffect(() => {
         if(!access || !refresh)
             return;  
             
-        axios.get('http://localhost:8000/api/user', { headers: { 'Authorization': access }})
+        axios.get(`${process.env.REACT_APP_API_URL}/user`, { headers: { 'Authorization': access }})
         .then(res => {
             setAuthenticated(true); 
         })
@@ -23,16 +23,16 @@ const Auth = ({children}) => {
     },[access, refresh])
 
     const login = (accessToken, refreshToken) => {
-        localStorage.setItem('auth-access', accessToken);
-        localStorage.setItem('auth-refresh', refreshToken);
+        localStorage.setItem(process.env.REACT_APP_ACCESSTK_KEY, accessToken);
+        localStorage.setItem(process.env.REACT_APP_REFRESHTK_KEY, refreshToken);
         setAccessToken(accessToken); 
         setRefreshToken(refreshToken);   
         setAuthenticated(true);
     }
 
     const logout = () => {
-        localStorage.setItem('auth-access', null); 
-        localStorage.setItem('auth-refresh', null); 
+        localStorage.setItem(process.env.REACT_APP_ACCESSTK_KEY, null); 
+        localStorage.setItem(process.env.REACT_APP_REFRESHTK_KEY, null); 
         setAccessToken(null); 
         setRefreshToken(null);   
         setAuthenticated(false); 
