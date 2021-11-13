@@ -1,52 +1,19 @@
-import React, {useState, useEffect} from "react"; 
-import axios from "axios"; 
-import Task from "./Task"; 
-import NewTask from "./NewTask";
+import { React, useState } from 'react'; 
+import Task from './Task'; 
 
-const TaskList = () => {
-    const [tasks, setTasks] = useState([]);
-    
-    useEffect(() => {
-        axios.get("http://localhost:8000/api/task")
-        .then(({data}) => {
-            setTasks(data);  
-        })
-        .catch(err => {
-            console.error(err); 
-        })
-    }, [])
-
-    const editTask = (data) => {
-        const newList = tasks.map(task => { return (task.id === data.id) ? data : task });
-        setTasks(newList);  
-    }
-
-    const addTask = (data) => {
-        const newList = tasks.concat(data);
-        setTasks(newList);
-    } 
-
-    const deleteTask = (data) => {
-        const newList = tasks.filter(task => { return (task.id !== data.id) });
-        setTasks(newList);
-    }
+const TaskList = (props) => {
+    const [tasks, setTasks] = useState(props.userTasks);
 
     return (
         <div className="bg-transparent flex flex-col justify-around">
-            <div className="bg-black text-white text-lg rounded-lg p-2">
-                <h1 className="text-white">Tasks</h1>
+            <div className="bg-black text-white text-lg rounded-lg p-2 mb-8">
+                <h1>Tasks</h1>
+            </div>
+            <div className="mb-10">
+                <input placeholder="New Task" className="w-full outline-none border-b-2"/>
             </div>
             <div>
-                <NewTask dispatchAddTask={addTask}/>
-            </div>
-            <div>
-                { tasks.map(task => (
-                        <Task key={task.id} {...task} 
-                            dispatchEditTask={editTask}
-                            dispatchDeleteTask={deleteTask}
-                        />
-                    ))
-                }
+                { tasks.map(task => ( <Task key={task.id} {...task}/> )) }
             </div>
         </div>
     )
