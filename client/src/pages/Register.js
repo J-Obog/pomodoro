@@ -13,7 +13,7 @@ const Register = () => {
             await axios.post(process.env.REACT_APP_API_URL + '/auth/register', { email: email, password: password});
             navigate('/login');
         } catch({response}) {
-            console.error(response); 
+            //handle errors 
         }
     }
 
