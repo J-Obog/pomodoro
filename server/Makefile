@@ -1,5 +1,10 @@
+HOST=localhost
+DATABASE=pdoro
+USER=postgres
+MIGRATIONS_PATH=./db/migrations
+
 dbup: 
-	psql -h localhost -U postgres -d pdoro -f ./db/migrations/up.sql
+	psql -h ${HOST} -U ${USER} -d ${DATABASE} -f ${MIGRATIONS_PATH}/up.sql
 
 dbdown:
-	psql -h localhost -U postgres -d pdoro -f ./db/migrations/down.sql
+	psql -h ${HOST} -U ${USER} -d ${DATABASE} -f ${MIGRATIONS_PATH}/down.sql
