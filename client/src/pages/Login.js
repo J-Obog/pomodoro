@@ -17,7 +17,7 @@ const Login = () => {
                     </div>
                 </div>
                 <div className="text-sm mb-12">
-                    <Link to="/signup">Not a member yet? Sign up</Link>
+                    <Link to="/register">Not a member yet? Sign up</Link>
                 </div>
                 <div className="mb-6 w-full">
                     <button className="bg-red-500 py-1 px-3 text-white text-xl rounded-lg w-full">Login</button>
