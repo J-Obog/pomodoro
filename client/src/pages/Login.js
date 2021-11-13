@@ -10,10 +10,10 @@ const Login = () => {
                 </div>
                 <div className="mb-10 w-full">
                     <div className="mb-10">
-                        <input placeHolder="Email" className="w-full outline-none border-b-2"/>
+                        <input placeholder="Email" className="w-full outline-none border-b-2"/>
                     </div>
                     <div>
-                        <input type="password" placeHolder="Password" className="w-full outline-none border-b-2"/>
+                        <input type="password" placeholder="Password" className="w-full outline-none border-b-2"/>
                     </div>
                 </div>
                 <div className="text-sm mb-12">

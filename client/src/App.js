@@ -5,14 +5,18 @@ import { PublicRoute, PrivateRoute } from './components/common';
 
 import { Dashboard, Login, Register } from './pages'; 
 
+import Auth from './context/AuthContext'; 
+
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route exact path='/login' element={<PublicRoute component={Login}/>}/>
-        <Route exact path='/register' element={<PublicRoute component={Register}/>}/>
-        <Route exact path='/' element={<PrivateRoute component={Dashboard}/>}/>
-      </Routes>
+      <Auth>
+        <Routes>
+          <Route exact path='/login' element={<PublicRoute component={Login}/>}/>
+          <Route exact path='/register' element={<PublicRoute component={Register}/>}/>
+          <Route exact path='/' element={<PrivateRoute component={Dashboard}/>}/>
+        </Routes>
+      </Auth>
     </BrowserRouter>
   );
 }

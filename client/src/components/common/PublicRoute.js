@@ -1,11 +1,12 @@
-import React from 'react';
+import { React, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 const PublicRoute = ({ component: Component }) => {
-  const isAuth = false; 
+  const { authenticated } = useContext(AuthContext);
    
   return (
-      !isAuth ? <Component/> : <Navigate to='/'/>
+      !authenticated ? <Component/> : <Navigate to='/'/>
   )
 };
 
