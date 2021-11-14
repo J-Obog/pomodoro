@@ -13,7 +13,7 @@ const TaskList = () => {
             setTasks(data); 
         })
         .catch(err => {})
-    }, [access])
+    }, [access, setTasks])
 
     const addTask = async (e) => {
         const title = e.target.value;
@@ -43,7 +43,7 @@ const TaskList = () => {
     return (
         <div className="bg-transparent flex flex-col justify-around">
             <div className="bg-black text-white text-lg rounded-lg p-2 mb-8">
-                <h1>Tasks</h1>
+                <h1>Task List</h1>
             </div>
             <div className="mb-10">
                 <input onKeyPress={addTask} 

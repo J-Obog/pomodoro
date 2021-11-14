@@ -6,6 +6,7 @@ const Task = (props) => {
     const { access } = useContext(AuthContext);
     const [complete, setCompletion] = useState(props.completed); 
     const [title, setTitle] = useState(props.title);
+    const [editing, setEditing] = useState(false); 
 
     const deleteTask = async () => {
         try {
@@ -42,7 +43,7 @@ const Task = (props) => {
                 </button>
             </div>
             <div>
-                <h1 className={`font-bold ${(complete) ? "line-through" : ""}`}>{title}</h1>
+                <h1 className={`outline-none font-bold ${(complete) ? "line-through" : ""}`}>{title}</h1>
             </div>
             <div>
                 <button onClick={deleteTask}>
