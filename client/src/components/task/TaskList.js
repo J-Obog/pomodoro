@@ -30,6 +30,16 @@ const TaskList = () => {
         }
     }
 
+    const handleDelete = (id) => {
+        const newList = tasks.filter(task => { return (task.id !== id) });
+        setTasks(newList);
+    }
+
+    const handleEdit = (data) => {
+        const newList = tasks.map(task => { return (task.id === data.id) ? data : task });
+        setTasks(newList);
+    } 
+
     return (
         <div className="bg-transparent flex flex-col justify-around">
             <div className="bg-black text-white text-lg rounded-lg p-2 mb-8">
@@ -40,7 +50,13 @@ const TaskList = () => {
                     placeholder="New Task" className="w-full outline-none border-b-2"/>
             </div>
             <div>
-                { tasks.map(task => ( <Task key={task.id} {...task}/> )) }
+                { tasks.map(task => ( 
+                        <Task key={task.id} {...task} 
+                            dispatchDelete={handleDelete}    
+                            dispatchEdit={handleEdit}    
+                        /> 
+                    )) 
+                }
             </div>
         </div>
     )
