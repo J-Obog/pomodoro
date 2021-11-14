@@ -55,7 +55,7 @@ const Timer = () => {
                 <div className="w-full flex flex-row">
                     { timerModes.map(mode => (
                             <TimerMode key={mode.name} {...mode}
-                                w={"1/3"}
+                                w={`1/${timerModes.length}`}
                                 active={(mode.name === currentMode) ? true : false}
                                 dispatchModeChange={handleModeChange}
                             />
