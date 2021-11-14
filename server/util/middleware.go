@@ -56,7 +56,8 @@ func JwtRequired(next http.Handler) http.Handler {
 			json.NewEncoder(w).Encode(map[string]interface{}{"message": "Authorization token has expired"})
 		} else {
 			jti := token.Claims.(jwt.MapClaims)["jti"]
-			if _, e := rcache.RS.Get(rcache.CTX, fmt.Sprintf("token-%s", jti)).Result(); e == nil {
+
+			if _, e := rcache.RS.Get(rcache.CTX, fmt.Sprintf("token-%d", jti)).Result(); e == nil {
 				w.WriteHeader(401)
 				json.NewEncoder(w).Encode(map[string]interface{}{"message": "Invalid authorization token"})
 			} else {
@@ -64,6 +65,5 @@ func JwtRequired(next http.Handler) http.Handler {
 				next.ServeHTTP(w, r.WithContext(ctx))
 			}
 		}
-
 	})
 }

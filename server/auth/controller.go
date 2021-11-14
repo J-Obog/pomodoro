@@ -34,8 +34,8 @@ func LogUserIn(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]interface{}{"message": "Email and password do not match"})
 		} else {
 			//give user token
-			accessToken := apputil.CreateAuthToken(time.Now().Add(1*time.Hour).Unix(), user.ID)
-			refreshToken := apputil.CreateAuthToken(time.Now().AddDate(0, 0, 30).Unix(), user.ID)
+			accessToken := apputil.CreateAuthToken(1, user.ID)
+			refreshToken := apputil.CreateAuthToken(24, user.ID)
 
 			if accessToken == "" || refreshToken == "" {
 				w.WriteHeader(500)
@@ -79,7 +79,7 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 func LogUserOut(w http.ResponseWriter, r *http.Request) {
 	jti := r.Context().Value("jti")
 
-	if _, e := rcache.RS.SetEX(rcache.CTX, fmt.Sprintf("token-%s", jti), "", 1*time.Hour).Result(); e != nil {
+	if _, e := rcache.RS.SetEX(rcache.CTX, fmt.Sprintf("token-%s", jti), "", 24*time.Hour).Result(); e != nil {
 		w.WriteHeader(500)
 	} else {
 		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Logout successful"})

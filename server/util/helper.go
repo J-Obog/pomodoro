@@ -8,10 +8,11 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-func CreateAuthToken(exp int64, sub uint) string {
+
+func CreateAuthToken(expHrs int, sub uint64) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.StandardClaims{
 		Id:        fmt.Sprint(sub),
-		ExpiresAt: exp,
+		ExpiresAt: time.Now().Add(time.Duration(expHrs) * time.Hour).Unix(),
 		IssuedAt:  time.Now().Unix(),
 	})
 
@@ -20,5 +21,6 @@ func CreateAuthToken(exp int64, sub uint) string {
 	if e != nil {
 		return ""
 	}
+	
 	return tokenStr
 }

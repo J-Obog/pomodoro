@@ -3,6 +3,7 @@ package task
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/J-Obog/pomodoro/db"
 	"github.com/gorilla/mux"
@@ -10,13 +11,15 @@ import (
 
 
 func CreateNewTask(w http.ResponseWriter, r *http.Request) {
-	jti := r.Context().Value("jti")
+	jti := r.Context().Value("jti").(string)
+	uid, _ := strconv.ParseUint(jti, 10, 64) 
 
 	var task Task
+
 	if e := json.NewDecoder(r.Body).Decode(&task); e != nil {
 		w.WriteHeader(500)
 	} else {
-		task.UserID = jti.(uint)
+		task.UserID = uid
 
 		if e := db.DB.Create(&task).Error; e != nil {
 			w.WriteHeader(500)
