@@ -4,17 +4,17 @@ import TimerMode from './TimerMode';
 const timerModes = [
     {
         name: 'Pomodoro', 
-        iconColor: 'red',
+        theme: 'red',
         duration: 25*60,
     },
     {
         name: 'Short Break', 
-        iconColor: 'green',
+        theme: 'green',
         duration: 5*60,
     },
     {
         name: 'Long Break', 
-        iconColor: 'blue',
+        theme: 'blue',
         duration: 15*60,
     }
 ]
@@ -29,6 +29,10 @@ const Timer = () => {
             if(running && time > 0) {
                 setTime(time - 1); 
             }
+
+            if(time === 0) { 
+                setRunning(false);
+            }
         }, 1000); 
         return () => {
             clearInterval(invId);
@@ -40,11 +44,19 @@ const Timer = () => {
     }
 
     const resetTimer = () => {
+        const t = timerModes.filter(m => { return m.name === currentMode }); 
         setRunning(false);
-        setTime(25*60); 
+        setTime(t[0].duration); 
     }
 
     const handleModeChange = (newMode, newDuration) => { 
+        if(running) {
+            const isConfirmed = window.confirm("The timer is still running, are you sure you want to move onto the next round?");
+
+            if(!isConfirmed)
+                return; 
+        }
+
         setRunning(false);
         setCurrentMode(newMode);
         setTime(newDuration);
@@ -62,10 +74,10 @@ const Timer = () => {
                         ))
                     }
                 </div>
-                <div className={`text-${(time <= 60) ? "red-400": "gray-800"} text-8xl p-10`}>
+                <div className={`bg-gray-100 w-full text-center text-${(time <= 60) ? "red-400": "gray-600"} text-7xl p-10`}>
                     <span>{parseInt(time / 60)}</span>|<span>{(time % 60 < 10) ? "0" : ""}{time % 60}</span>
                 </div>
-                <div className="h-auto w-full border-t border-gray-200 py-3">
+                <div className="text-xs h-auto w-full border-t border-gray-200 py-3">
                     <button onClick={toggleTimer} className="bg-red-400 text-white rounded-lg px-12 py-2 mx-6">
                         <span>{(running) ? "STOP" : "START"}</span>
                     </button>
