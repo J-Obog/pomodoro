@@ -41,7 +41,7 @@ const TaskList = () => {
     } 
 
     return (
-        <div className="bg-gray-200 rounded-lg flex flex-col justify-around p-2">
+        <div className="bg-gray-200 rounded-lg flex flex-col justify-around p-2 w-3/4">
             <div className="text-gray-600 text-lg font-bold p-2 mb-8">
                 <h1>Task List 📝</h1>
             </div>

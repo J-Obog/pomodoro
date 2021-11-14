@@ -5,7 +5,7 @@ import Timer from '../components/timer/Timer';
 
 const Dashboard = () => {    
     return (
-        <div className="timer-app flex h-screen">
+        <div className="flex h-screen p-4">
             <div className="flex flex-col items-center w-4/6 m-3">
                 <Timer/>
             </div>

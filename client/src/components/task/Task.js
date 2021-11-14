@@ -34,7 +34,7 @@ const Task = (props) => {
     }
 
     return (
-        <div className="bg-white rounded-lg p-2 mt-2 border-gray-200 border font-bold text-sm flex items-center justify-between">
+        <div className="bg-white rounded-lg p-2 mt-2 border-gray-200 border text-sm flex items-center justify-between">
            <div>
                <button onClick={toggleComplete}>
                     <span className={`cursor-pointer rounded-md px-1 py-0.5 text-white text-xs ${(complete) ? "bg-green-400" : "bg-red-400"}`}>
@@ -43,7 +43,7 @@ const Task = (props) => {
                 </button>
             </div>
             <div>
-                <h1 className={`outline-none font-bold ${(complete) ? "line-through" : ""}`}>{title}</h1>
+                <h1 className={`outline-none ${(complete) ? "line-through" : ""}`}>{title}</h1>
             </div>
             <div>
                 <button onClick={deleteTask}>
