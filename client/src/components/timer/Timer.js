@@ -44,6 +44,12 @@ const Timer = () => {
         setTime(25*60); 
     }
 
+    const handleModeChange = (newMode, newDuration) => { 
+        setRunning(false);
+        setCurrentMode(newMode);
+        setTime(newDuration);
+    }
+
     return (
         <div className="bg-white border border-gray-200 w-3/4 px-0 rounded-xl flex flex-col items-center justify-center"> 
                 <div className="w-full flex flex-row">
@@ -51,6 +57,7 @@ const Timer = () => {
                             <TimerMode key={mode.name} {...mode}
                                 w={"1/3"}
                                 active={(mode.name === currentMode) ? true : false}
+                                dispatchModeChange={handleModeChange}
                             />
                         ))
                     }
