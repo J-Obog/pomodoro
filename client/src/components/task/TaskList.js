@@ -41,13 +41,13 @@ const TaskList = () => {
     } 
 
     return (
-        <div className="bg-transparent flex flex-col justify-around">
-            <div className="bg-black text-white text-lg rounded-lg p-2 mb-8">
-                <h1>Task List</h1>
+        <div className="bg-gray-200 rounded-lg flex flex-col justify-around p-2">
+            <div className="text-gray-600 text-lg font-bold p-2 mb-8">
+                <h1>Task List 📝</h1>
             </div>
             <div className="mb-10">
-                <input onKeyPress={addTask} 
-                    placeholder="New Task" className="w-full outline-none border-b-2"/>
+                <input onKeyPress={addTask} maxLength={30}
+                    placeholder="New Task" className="w-full bg-transparent outline-none border-b-2 border-gray-300"/>
             </div>
             <div>
                 { tasks.map(task => ( 
