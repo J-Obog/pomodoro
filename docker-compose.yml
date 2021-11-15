@@ -13,13 +13,18 @@ services:
   api:
     build:
       context: ./server
+    environment:
+      - GO_ENV=docker-dev
     env_file:
       - ./data/redis/docker.env
       - ./data/postgres/docker.env
       - ./server/docker.env
+    depends_on:
+      - db
+      - cache
     ports:
       - 8000:8000
-
+      
   cache:
     image: redis:latest
     env_file:
