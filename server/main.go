@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/J-Obog/pomodoro/auth"
-	rcache "github.com/J-Obog/pomodoro/cache"
 	"github.com/J-Obog/pomodoro/db"
 	"github.com/J-Obog/pomodoro/task"
 	"github.com/J-Obog/pomodoro/user"
@@ -26,7 +25,7 @@ func main() {
 	
 	//connect to postgres db and redis cache
 	db.Connect()
-	rcache.Connect()
+	//rcache.Connect()
 
 	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
