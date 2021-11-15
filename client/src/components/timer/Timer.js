@@ -4,20 +4,26 @@ import TimerMode from './TimerMode';
 const timerModes = [
     {
         name: 'Pomodoro', 
-        theme: 'red',
+        theme: '#EF4444 ',
         duration: 25*60,
     },
     {
         name: 'Short Break', 
-        theme: 'green',
+        theme: '#5EEAD4',
         duration: 5*60,
     },
     {
         name: 'Long Break', 
-        theme: 'blue',
+        theme: '#38BDF8 ',
         duration: 15*60,
     }
 ]
+
+const timerMsg = {
+    'Pomodoro': 'Focusing', 
+    'Short Break': 'Taking a quick break', 
+    'Long Break': 'Taking a long break', 
+}
 
 const Timer = () => {
     const [time, setTime] = useState(25*60); 
@@ -63,28 +69,40 @@ const Timer = () => {
     }
 
     return (
-        <div className="bg-white border border-gray-200 w-3/5 px-0 rounded-xl flex flex-col items-center justify-center"> 
-                <div className="w-full flex flex-row">
-                    { timerModes.map(mode => (
-                            <TimerMode key={mode.name} {...mode}
-                                w={`1/${timerModes.length}`}
-                                active={(mode.name === currentMode) ? true : false}
-                                dispatchModeChange={handleModeChange}
-                            />
-                        ))
-                    }
-                </div>
-                <div className={`bg-gray-100 w-full text-center text-${(time <= 60) ? "red-400": "gray-600"} text-7xl p-10`}>
-                    <span>{parseInt(time / 60)}</span>|<span>{(time % 60 < 10) ? "0" : ""}{time % 60}</span>
-                </div>
-                <div className="text-xs h-auto w-full border-t border-gray-200 py-3">
-                    <button onClick={toggleTimer} className="bg-red-400 text-white rounded-lg px-12 py-2 mx-6">
-                        <span>{(running) ? "STOP" : "START"}</span>
-                    </button>
-                    <button onClick={resetTimer} className="bg-white text-red-400 border border-gray-200 rounded-lg px-12 py-2">
-                        RESET
-                    </button>
-                </div>
+        <div className="w-full flex flex-col justify-center items-center">
+            <div className="text-4xl text-gray-700 m-3">
+                <h1>{timerMsg[currentMode]}</h1>
+            </div>
+            <div className="bg-white border border-gray-200 w-3/5 px-0 rounded-xl flex flex-col items-center justify-center m-3"> 
+                    <div className="w-full flex flex-row">
+                        { timerModes.map(mode => (
+                                <TimerMode key={mode.name} {...mode}
+                                    w={`1/${timerModes.length}`}
+                                    active={(mode.name === currentMode) ? true : false}
+                                    dispatchModeChange={handleModeChange}
+                                />
+                            ))
+                        }
+                    </div>
+                    <div className={`bg-gray-100 w-full text-center text-${(time <= 60) ? "red-400": "gray-600"} text-7xl p-10`}>
+                        <span>{parseInt(time / 60)}</span>|<span>{(time % 60 < 10) ? "0" : ""}{time % 60}</span>
+                    </div>
+                    <div className="flex flex-row justify-between text-xs h-auto w-full border-t border-gray-200 py-3 px-2">
+                        <div>
+                            <button onClick={toggleTimer} className="bg-red-400 text-white rounded-lg px-6 py-2 mx-2">
+                                <span>{(running) ? "STOP" : "START"}</span>
+                            </button>
+                            <button onClick={resetTimer} className="bg-red-400 text-white rounded-lg px-6 py-2 mx-2">
+                                RESET
+                            </button>
+                            <button className="bg-red-400 text-white rounded-lg px-6 py-2 mx-2">
+                                NEXT
+                            </button>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+            </div>
         </div>
     )
 }; 
