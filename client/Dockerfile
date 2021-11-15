@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:lts-alpine3.14
 
 RUN mkdir /react-client
 

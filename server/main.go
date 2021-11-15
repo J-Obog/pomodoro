@@ -18,7 +18,7 @@ import (
 
 
 func main() {
-	if os.Getenv("GO_ENV") != "PROD" {
+	if os.Getenv("GO_ENV") == "dev" {
 		if e := godotenv.Load(".env"); e != nil {
 			log.Fatal("Failed to initialize dotenv configuration")
 		}

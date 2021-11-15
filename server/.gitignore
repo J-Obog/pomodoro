@@ -22,3 +22,6 @@
 
 # fresh-exe
 tmp/
+
+# docker
+docker.env

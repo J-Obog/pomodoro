@@ -3,34 +3,34 @@ version: "3.6"
 services:
   client:
     stdin_open: true
-    container_name: react-client
     build: 
       context: ./client
-      dockerfile: Dockerfile
+    env_file:
+      - ./client/docker.env
     ports:
       - 3000:3000
 
-  backend:
-    container_name: go-server
+  api:
     build:
       context: ./server
-      dockerfile: Dockerfile
+    env_file:
+      - ./pgdata/docker.env
+      - ./server/docker.env
     ports:
       - 8000:8000
-    depends_on:
-      - db
 
   db:
     image: postgres:latest
-    container_name: pg-db
     restart: always
-    environment: 
-      - POSTGRES_USER=postgres 
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - ./pgdata/docker.env
     ports:
       - 5432:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./pgdata:/postgresql/data
 
-volumes:
-  pgdata:
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080
