@@ -27,7 +27,7 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - redis-data:/var/lib/redis
+      - redis_data:/data
 
   redis-commander:
     image: rediscommander/redis-commander:latest
@@ -43,7 +43,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
   adminer:
     image: adminer:latest
@@ -51,5 +51,5 @@ services:
       - 8080:8080
 
 volumes:
-  redis-data:
-  postgres-data:
+  postgres_data:
+  redis_data:
