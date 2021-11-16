@@ -10,7 +10,7 @@ import (
 	"github.com/J-Obog/pomodoro/apputils"
 	"github.com/J-Obog/pomodoro/data"
 	"github.com/J-Obog/pomodoro/models"
-	"github.com/go-playground/validator/v10"
+	"github.com/J-Obog/pomodoro/validators"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -49,30 +49,24 @@ func LogUserIn(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var body map[string]interface{}
 	
-	if e := json.NewDecoder(r.Body).Decode(&user); e != nil {
+	if e := json.NewDecoder(r.Body).Decode(&body); e != nil {
 		w.WriteHeader(500)
 		return
 	}
 
-	if e := data.DB.Where("email = ?", user.Email).First(&user).Error; e == nil {
-		w.WriteHeader(401) 
-		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Account with email already exists"})
+	if e := validators.ValidateUserReg(body); e != nil {
+		w.WriteHeader(401)
+		json.NewEncoder(w).Encode(map[string]interface{}{"errors": e})
 		return
-	} 
+	}
 
-	if e := validator.New().Struct(user); e != nil {
-		w.WriteHeader(401) 
-		json.NewEncoder(w).Encode(map[string]interface{}{"errors": ""})
-		return
-	} 
-
-	if hash, e := bcrypt.GenerateFromPassword([]byte(user.Password), 10); e != nil {
+	if hash, e := bcrypt.GenerateFromPassword([]byte(body["password"].(string)), 10); e != nil {
 		w.WriteHeader(500)
 	} else {
-		user.Password = string(hash)
-		
+		var user = models.User{ Email: body["email"].(string), Password: string(hash), }
+
 		if e := data.DB.Create(&user).Error; e != nil {
 			w.WriteHeader(500)
 			return
