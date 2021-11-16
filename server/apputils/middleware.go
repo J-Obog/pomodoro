@@ -55,7 +55,7 @@ func JWTAuthMiddleware(next http.Handler) http.Handler {
 		} else {
 			jti := token.Claims.(jwt.MapClaims)["jti"]
 
-			if _, e := data.RS.Get(data.CTX, fmt.Sprintf("token-%d", jti)).Result(); e == nil {
+			if _, e := data.RS.Get(context.Background(), fmt.Sprintf("token-%d", jti)).Result(); e == nil {
 				w.WriteHeader(401)
 				json.NewEncoder(w).Encode(map[string]interface{}{"message": "Invalid authorization token"})
 			} else {

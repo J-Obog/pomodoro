@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -78,7 +79,7 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 func LogUserOut(w http.ResponseWriter, r *http.Request) {
 	jti := r.Context().Value("jti")
 
-	if _, e := data.RS.SetEX(data.CTX, fmt.Sprintf("token-%s", jti), "", 24*time.Hour).Result(); e != nil {
+	if _, e := data.RS.SetEX(context.Background(), fmt.Sprintf("token-%s", jti), "", 24*time.Hour).Result(); e != nil {
 		w.WriteHeader(500)
 	} else {
 		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Logout successful"})

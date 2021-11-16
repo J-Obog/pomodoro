@@ -1,7 +1,6 @@
 package data
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
@@ -10,8 +9,8 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-var CTX = context.Background()
 var RS *redis.Client
+
 
 func ConnectCache() {
 	dbn, e := strconv.Atoi(os.Getenv("REDIS_DB"))
