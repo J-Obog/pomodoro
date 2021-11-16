@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/J-Obog/pomodoro/data"
@@ -16,7 +18,7 @@ func CreateAuthToken(expHrs int, sub uint64, tokenType string) string {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 
-	claims["sub"] = sub
+	claims["sub"] = fmt.Sprint(sub)
 	claims["iat"] = time.Now().Unix()
 	claims["exp"] = time.Now().Add(time.Duration(expHrs) * time.Hour).Unix()
 	claims["tkn"] = tokenType
@@ -56,3 +58,17 @@ func VerifyJWTToken(authToken string) (*jwt.Token, error) {
 	
 	return token, nil
 }	
+
+func GetTokenJTI(r *http.Request) (uint64) {
+	jwtToken := r.Context().Value("jwt").(*jwt.Token)
+	claims := jwtToken.Claims.(jwt.MapClaims)
+	jtiStr := claims["sub"].(string)
+
+	jti, _ := strconv.ParseUint(jtiStr, 10, 64)
+	return jti
+}
+
+func GetTokenRaw(r *http.Request) (string) {
+	jwtToken := r.Context().Value("jwt").(*jwt.Token)
+	return jwtToken.Raw
+}

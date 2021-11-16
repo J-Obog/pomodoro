@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/J-Obog/pomodoro/apputils"
 	"github.com/J-Obog/pomodoro/data"
 	"github.com/J-Obog/pomodoro/models"
 )
 
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	jti := r.Context().Value("jti")
+	jti := apputils.GetTokenJTI(r)
+	
 	var user models.User
 
 	if e := data.DB.First(&user, jti).Error; e != nil {

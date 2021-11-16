@@ -35,10 +35,10 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 
 func JWTAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get(os.Getenv("JWT_HEADER"))
+		tokenStr := r.Header.Get(os.Getenv("JWT_HEADER"))
 		
-		if token != "" {
-			jwtToken, e := VerifyJWTToken(token)
+		if tokenStr != "" {
+			jwtToken, e := VerifyJWTToken(tokenStr)
 			
 			if e != nil {
 				w.WriteHeader(401)
@@ -48,9 +48,9 @@ func JWTAuthMiddleware(next http.Handler) http.Handler {
 			
 			ctx := context.WithValue(r.Context(), "jwt", jwtToken)
 			next.ServeHTTP(w, r.WithContext(ctx))
+		} else {
+			w.WriteHeader(401)
+			json.NewEncoder(w).Encode(map[string]interface{}{"message": "Authorization header missing"})
 		}
-		
-		w.WriteHeader(401)
-		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Authorization header missing"})
 	})
 }
