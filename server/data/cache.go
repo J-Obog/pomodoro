@@ -1,4 +1,4 @@
-package rcache
+package data
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 var CTX = context.Background()
 var RS *redis.Client
 
-func Connect() {
+func ConnectCache() {
 	dbn, e := strconv.Atoi(os.Getenv("REDIS_DB"))
 
 	if e != nil {
@@ -28,5 +28,6 @@ func Connect() {
 		log.Fatal("Failed to connect to redis host")
 	} else {
 		RS = rdb
+		fmt.Println("Successfully connected to Redis server")
 	}
 }

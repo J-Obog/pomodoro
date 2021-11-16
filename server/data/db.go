@@ -1,4 +1,4 @@
-package db
+package data
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 
 var DB *gorm.DB
 
-func Connect() {
+func ConnectDB() {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s", 
 						os.Getenv("POSTGRES_HOST"), 
 						os.Getenv("POSTGRES_USER"), 
@@ -26,4 +26,5 @@ func Connect() {
 	}
 
 	DB = db
+	fmt.Println("Successfully connected to Postgres server")
 }

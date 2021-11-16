@@ -26,9 +26,9 @@ const timerMsg = {
 }
 
 const Timer = () => {
-    const [time, setTime] = useState(25*60); 
+    const [time, setTime] = useState(timerModes[0].duration); 
     const [running, setRunning] = useState(false); 
-    const [currentMode, setCurrentMode] = useState('Pomodoro'); 
+    const [currentMode, setCurrentMode] = useState(timerModes[0].name); 
 
     useEffect(() => {
         const invId = setInterval(() => {
@@ -73,7 +73,7 @@ const Timer = () => {
             <div className="text-4xl text-gray-700 m-3">
                 <h1>{timerMsg[currentMode]}</h1>
             </div>
-            <div className="bg-white border border-gray-200 w-3/5 px-0 rounded-xl flex flex-col items-center justify-center m-3"> 
+            <div className="shadow-md bg-white border border-gray-200 w-3/5 px-0 rounded-xl flex flex-col items-center justify-center m-3"> 
                     <div className="w-full flex flex-row">
                         { timerModes.map(mode => (
                                 <TimerMode key={mode.name} {...mode}
@@ -94,9 +94,6 @@ const Timer = () => {
                             </button>
                             <button onClick={resetTimer} className="bg-red-400 text-white rounded-lg px-6 py-2 mx-2">
                                 RESET
-                            </button>
-                            <button className="bg-red-400 text-white rounded-lg px-6 py-2 mx-2">
-                                NEXT
                             </button>
                         </div>
                         <div>

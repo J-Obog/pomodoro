@@ -1,4 +1,4 @@
-package apputil
+package apputils
 
 import (
 	"context"
@@ -8,12 +8,11 @@ import (
 	"net/http"
 	"os"
 
-	rcache "github.com/J-Obog/pomodoro/cache"
+	"github.com/J-Obog/pomodoro/data"
 	"github.com/dgrijalva/jwt-go"
 )
 
-// middleware for handling CORS configs
-func CORS(next http.Handler) http.Handler {
+func CORSMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, PATCH, POST, PUT, DELETE, OPTIONS")
@@ -21,7 +20,6 @@ func CORS(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.Header().Set("Content-Type", "application/json")
 
-		// handle OPTIONS request
 		if r.Method == "OPTIONS" {
 			return
 		}
@@ -30,16 +28,16 @@ func CORS(next http.Handler) http.Handler {
 	})
 }
 
-// middleware for logging requests
-func RequestLogger(next http.Handler) http.Handler {
+
+func LoggerMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Println("<" + r.Method + "> " + r.RequestURI)
 		next.ServeHTTP(w, r)
 	})
 }
 
-//middleware for verifying jwt token
-func JwtRequired(next http.Handler) http.Handler {
+
+func JWTAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		auth_token := r.Header.Get(os.Getenv("JWT_HEADER"))
 		
@@ -57,7 +55,7 @@ func JwtRequired(next http.Handler) http.Handler {
 		} else {
 			jti := token.Claims.(jwt.MapClaims)["jti"]
 
-			if _, e := rcache.RS.Get(rcache.CTX, fmt.Sprintf("token-%d", jti)).Result(); e == nil {
+			if _, e := data.RS.Get(data.CTX, fmt.Sprintf("token-%d", jti)).Result(); e == nil {
 				w.WriteHeader(401)
 				json.NewEncoder(w).Encode(map[string]interface{}{"message": "Invalid authorization token"})
 			} else {

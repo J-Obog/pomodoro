@@ -8,7 +8,7 @@ const TaskList = () => {
     const [tasks, setTasks] = useState([]); 
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/task/`, { headers: { 'Authorization': access }})
+        axios.get(`${process.env.REACT_APP_API_URL}/task`, { headers: { 'Authorization': access }})
         .then(({data}) => {
             setTasks(data); 
         })

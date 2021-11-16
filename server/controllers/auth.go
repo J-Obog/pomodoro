@@ -1,4 +1,4 @@
-package auth
+package controllers
 
 import (
 	"encoding/json"
@@ -6,17 +6,16 @@ import (
 	"net/http"
 	"time"
 
-	rcache "github.com/J-Obog/pomodoro/cache"
-	"github.com/J-Obog/pomodoro/db"
-	"github.com/J-Obog/pomodoro/user"
-	apputil "github.com/J-Obog/pomodoro/util"
+	"github.com/J-Obog/pomodoro/apputils"
+	"github.com/J-Obog/pomodoro/data"
+	"github.com/J-Obog/pomodoro/models"
 	"github.com/go-playground/validator/v10"
 	"golang.org/x/crypto/bcrypt"
 )
 
 
 func LogUserIn(w http.ResponseWriter, r *http.Request) {
-	var user user.User
+	var user models.User
 
 	if e := json.NewDecoder(r.Body).Decode(&user); e != nil {
 		w.WriteHeader(500) 
@@ -25,7 +24,7 @@ func LogUserIn(w http.ResponseWriter, r *http.Request) {
 
 	pass := user.Password
 
-	if e := db.DB.Where("email = ?", user.Email).First(&user).Error; e != nil {
+	if e := data.DB.Where("email = ?", user.Email).First(&user).Error; e != nil {
 		w.WriteHeader(401) 
 		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Account with email does not exist"})
 	} else {
@@ -34,8 +33,8 @@ func LogUserIn(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]interface{}{"message": "Email and password do not match"})
 		} else {
 			//give user token
-			accessToken := apputil.CreateAuthToken(1, user.ID)
-			refreshToken := apputil.CreateAuthToken(24, user.ID)
+			accessToken := apputils.CreateAuthToken(1, user.ID)
+			refreshToken := apputils.CreateAuthToken(24, user.ID)
 
 			if accessToken == "" || refreshToken == "" {
 				w.WriteHeader(500)
@@ -50,7 +49,7 @@ func LogUserIn(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
-	var user user.User
+	var user models.User
 	
 	if e := json.NewDecoder(r.Body).Decode(&user); e != nil {
 		w.WriteHeader(500)
@@ -67,7 +66,7 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 		} else {
 			user.Password = string(hash)
 			
-			if e := db.DB.Create(&user).Error; e != nil {
+			if e := data.DB.Create(&user).Error; e != nil {
 				w.WriteHeader(500)
 			} else {
 				json.NewEncoder(w).Encode(map[string]interface{}{"message": "Registration successful"})
@@ -79,7 +78,7 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 func LogUserOut(w http.ResponseWriter, r *http.Request) {
 	jti := r.Context().Value("jti")
 
-	if _, e := rcache.RS.SetEX(rcache.CTX, fmt.Sprintf("token-%s", jti), "", 24*time.Hour).Result(); e != nil {
+	if _, e := data.RS.SetEX(data.CTX, fmt.Sprintf("token-%s", jti), "", 24*time.Hour).Result(); e != nil {
 		w.WriteHeader(500)
 	} else {
 		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Logout successful"})

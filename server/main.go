@@ -5,16 +5,12 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/J-Obog/pomodoro/auth"
-	rcache "github.com/J-Obog/pomodoro/cache"
-	"github.com/J-Obog/pomodoro/db"
-	"github.com/J-Obog/pomodoro/task"
-	"github.com/J-Obog/pomodoro/user"
-	apputil "github.com/J-Obog/pomodoro/util"
+	"github.com/J-Obog/pomodoro/apputils"
+	"github.com/J-Obog/pomodoro/data"
+	"github.com/J-Obog/pomodoro/routes"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
-
 
 
 func main() {
@@ -24,20 +20,13 @@ func main() {
 		}
 	}
 	
-	//connect to postgres db and redis cache
-	db.Connect()
-	rcache.Connect()
+	data.ConnectDB()
+	data.ConnectCache()
 
-	//create and configure main router
 	router := mux.NewRouter().StrictSlash(true)
-	router.Use(apputil.RequestLogger)
+	router.Use(apputils.LoggerMiddleware)
+	routes.InitApiRouter(router.PathPrefix("/api").Subrouter())
 
-	//configure sub routers
-	task.AddRoutes(router.PathPrefix("/api/task").Subrouter())
-	auth.AddRoutes(router.PathPrefix("/api/auth").Subrouter())
-	user.AddRoutes(router.PathPrefix("/api/user").Subrouter())
-	
-	//spin up server
-	log.Println("Server running on port 8000")
-	log.Fatal(http.ListenAndServe(":" + os.Getenv("APP_PORT"), apputil.CORS(router))) //router wrapped with CORS middleware
+	log.Println("Server running on port " + os.Getenv("APP_PORT"))
+	log.Fatal(http.ListenAndServe(":" + os.Getenv("APP_PORT"), apputils.CORSMiddleware(router)))
 }
