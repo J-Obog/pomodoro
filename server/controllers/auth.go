@@ -28,25 +28,24 @@ func LogUserIn(w http.ResponseWriter, r *http.Request) {
 	if e := data.DB.Where("email = ?", user.Email).First(&user).Error; e != nil {
 		w.WriteHeader(401) 
 		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Account with email does not exist"})
-	} else {
-		if e := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass)); e != nil {
-			w.WriteHeader(401)
-			json.NewEncoder(w).Encode(map[string]interface{}{"message": "Email and password do not match"})
-		} else {
-			//give user token
-			accessToken := apputils.CreateAuthToken(1, user.ID)
-			refreshToken := apputils.CreateAuthToken(24, user.ID)
+		return
+	} 
 
-			if accessToken == "" || refreshToken == "" {
-				w.WriteHeader(500)
-			} else {
-				json.NewEncoder(w).Encode(map[string]interface{}{
-					"access_token": accessToken,
-					"refresh_token": refreshToken,
-				})
-			}
-		}
+	if e := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass)); e != nil {
+		w.WriteHeader(401)
+		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Email and password do not match"})
+		return
+	} 
+
+	accessToken := apputils.CreateAuthToken(1, user.ID, "access")
+	refreshToken := apputils.CreateAuthToken(24, user.ID, "refresh")
+
+	if accessToken == "" || refreshToken == "" {
+		w.WriteHeader(500)
+		return
 	}
+	
+	json.NewEncoder(w).Encode(map[string]interface{}{"access_token": accessToken,"refresh_token": refreshToken})
 }
 
 func RegisterNewUser(w http.ResponseWriter, r *http.Request) {

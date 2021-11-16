@@ -3,13 +3,9 @@ package apputils
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/J-Obog/pomodoro/data"
-	"github.com/dgrijalva/jwt-go"
 )
 
 func CORSMiddleware(next http.Handler) http.Handler {
@@ -39,29 +35,22 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 
 func JWTAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		auth_token := r.Header.Get(os.Getenv("JWT_HEADER"))
+		token := r.Header.Get(os.Getenv("JWT_HEADER"))
 		
-		if auth_token == "" {
-			w.WriteHeader(401)
-			json.NewEncoder(w).Encode(map[string]interface{}{"message": "Authorization header missing"})
-			return
-		}
-
-		if token, e := jwt.Parse(auth_token, func(token *jwt.Token) (interface{}, error) {
-			return []byte(os.Getenv("JWT_SECRET_KEY")), nil
-		}); e != nil {
-			w.WriteHeader(401)
-			json.NewEncoder(w).Encode(map[string]interface{}{"message": "Authorization token has expired"})
-		} else {
-			jti := token.Claims.(jwt.MapClaims)["jti"]
-
-			if _, e := data.RS.Get(context.Background(), fmt.Sprintf("token-%d", jti)).Result(); e == nil {
+		if token != "" {
+			jwtToken, e := VerifyJWTToken(token)
+			
+			if e != nil {
 				w.WriteHeader(401)
-				json.NewEncoder(w).Encode(map[string]interface{}{"message": "Invalid authorization token"})
-			} else {
-				ctx := context.WithValue(r.Context(), "jti", jti)
-				next.ServeHTTP(w, r.WithContext(ctx))
+				json.NewEncoder(w).Encode(map[string]interface{}{"message": e.Error()})
+				return
 			}
+			
+			ctx := context.WithValue(r.Context(), "jwt", jwtToken)
+			next.ServeHTTP(w, r.WithContext(ctx))
 		}
+		
+		w.WriteHeader(401)
+		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Authorization header missing"})
 	})
 }
