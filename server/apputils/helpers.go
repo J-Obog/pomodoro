@@ -35,7 +35,7 @@ func CreateAuthToken(expHrs int, sub uint64, tokenType string) string {
 func VerifyJWTToken(authToken string) (*jwt.Token, error) {
 	token, e := jwt.Parse(authToken, func(token *jwt.Token) (interface{}, error) {
 		tokenType := token.Claims.(jwt.MapClaims)["tkn"]
-		tokenSub := token.Claims.(jwt.MapClaims)["sub"]
+		tokenJTI := token.Claims.(jwt.MapClaims)["sub"]
 
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("Invalid signing method")
@@ -45,7 +45,7 @@ func VerifyJWTToken(authToken string) (*jwt.Token, error) {
 			return nil, errors.New("Invalid token type")
 		}
 
-		if _, e := data.RS.Get(context.Background(), fmt.Sprintf("token.%s.%s", tokenSub, authToken)).Result(); e == nil {
+		if _, e := data.RS.Get(context.Background(), fmt.Sprintf("token.%s.%s", tokenJTI, authToken)).Result(); e == nil {
 			return nil, errors.New("Token has been blacklisted")
 		}
 

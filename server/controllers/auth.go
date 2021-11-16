@@ -76,11 +76,14 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogUserOut(w http.ResponseWriter, r *http.Request) {
-	jti := r.Context().Value("jti")
+	jti := apputils.GetTokenJTI(r)
+	jwtStr := apputils.GetTokenRaw(r)
+	k := fmt.Sprintf("token.%d.%s", jti, jwtStr)
 
-	if _, e := data.RS.SetEX(context.Background(), fmt.Sprintf("token-%s", jti), "", 24*time.Hour).Result(); e != nil {
+	if _, e := data.RS.SetEX(context.Background(), k, "", 24*time.Hour).Result(); e != nil {
 		w.WriteHeader(500)
-	} else {
-		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Logout successful"})
+		return
 	}
+		
+	json.NewEncoder(w).Encode(map[string]interface{}{"message": "Logout successful"})
 }
