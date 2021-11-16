@@ -16,24 +16,23 @@ import (
 
 
 func LogUserIn(w http.ResponseWriter, r *http.Request) {
+	body, e := apputils.ParseBody(r)
 	var user models.User
 
-	if e := json.NewDecoder(r.Body).Decode(&user); e != nil {
-		w.WriteHeader(500) 
+	if e != nil {
+		w.WriteHeader(500)
 		return
 	}
 
-	pass := user.Password
-
-	if e := data.DB.Where("email = ?", user.Email).First(&user).Error; e != nil {
+	if e := data.DB.Where("email = ?", body["email"]).First(&user).Error; e != nil {
 		w.WriteHeader(401) 
-		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Account with email does not exist"})
+		json.NewEncoder(w).Encode(map[string]interface{}{"email": "Account with email address does not exist"})
 		return
 	} 
 
-	if e := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass)); e != nil {
+	if e := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body["password"].(string))); e != nil {
 		w.WriteHeader(401)
-		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Email and password do not match"})
+		json.NewEncoder(w).Encode(map[string]interface{}{"password": "The password you've entered is incorrect"})
 		return
 	} 
 

@@ -7,35 +7,47 @@ const Login = () => {
     const { login } = useContext(AuthContext);
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
-    //const [error, setError] = useState(null); 
+    const [error, setError] = useState(null); 
 
     const attemptLogin = async () => { 
         try {
             const { data } = await axios.post(process.env.REACT_APP_API_URL + '/auth/login', { email: email, password: password });
             login(data.access_token, data.refresh_token); 
         } catch({response}) {
-            //handle errors
+           setError(response.data);
+        }
+    }
+
+    const inputKeyPressed = (e) => {
+        if(e.key === "Enter") {
+            attemptLogin(); 
         }
     }
 
     return (
         <div className="flex items-center justify-center h-screen">
-            <div className="bg-white w-2/6 px-16 py-8 rounded-xl flex flex-col items-center justify-center">
+            <div className="bg-white w-2/5 px-16 py-8 rounded-xl flex flex-col items-center justify-center">
                 <div className="mb-16">
                     <h1 className="text-4xl font-bold">Pomodoro</h1>
                 </div>
                 <div className="mb-10 w-full">
                     <div className="mb-10">
-                        <input onInput={e => { setEmail(e.target.value) }} 
+                        <input onKeyPress={inputKeyPressed} onInput={e => { setEmail(e.target.value) }} 
                             placeholder="Email" className="w-full outline-none border-b-2"/>
+                        <div className="text-red-500 text-sm text-center">
+                            <span>{error?.email || ""}</span>
+                        </div>
                     </div>
                     <div>
-                        <input onInput={e => { setPassword(e.target.value) }} 
+                        <input onKeyPress={inputKeyPressed} onInput={e => { setPassword(e.target.value) }} 
                             type="password" placeholder="Password" className="w-full outline-none border-b-2"/>
+                        <div className="text-red-500 text-sm text-center">
+                            <span>{error?.password || ""}</span>
+                        </div>
                     </div>
                 </div>
                 <div className="text-sm mb-12">
-                    <Link to="/register">Not a member yet? Sign up</Link>
+                    <Link to="/register">Not a member yet? <b>Sign up</b></Link>
                 </div>
                 <div className="mb-6 w-full">
                     <button onClick={attemptLogin} 

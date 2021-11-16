@@ -13,14 +13,14 @@ import (
 
 func CreateNewTask(w http.ResponseWriter, r *http.Request) {
 	jti := apputils.GetTokenJTI(r)
-	var task models.Task
+	body, e := apputils.ParseBody(r)
 
-	if e := json.NewDecoder(r.Body).Decode(&task); e != nil {
+	if e != nil {
 		w.WriteHeader(500)
 		return
-	} 
-	
-	task.UserID = jti
+	}
+
+	var task = models.Task{ UserID: jti, Title: body["title"].(string), }
 
 	if e := data.DB.Create(&task).Error; e != nil {
 		w.WriteHeader(500)
@@ -67,14 +67,14 @@ func RemoveTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	var body map[string]interface{}
+	body, e := apputils.ParseBody(r)
 	var task models.Task
+	id := mux.Vars(r)["id"]
 
-	if e := json.NewDecoder(r.Body).Decode(&body); e != nil {
+	if e != nil {
 		w.WriteHeader(500)
-		return 
-	} 
+		return
+	}
 
 	if e := data.DB.First(&task, id).Updates(body).Error; e != nil {
 		w.WriteHeader(500)
