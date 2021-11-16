@@ -2,6 +2,7 @@ package apputils
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -69,4 +70,16 @@ func GetTokenJTI(r *http.Request) (uint64) {
 func GetTokenRaw(r *http.Request) (string) {
 	jwtToken := r.Context().Value("jwt").(*jwt.Token)
 	return jwtToken.Raw
+}
+
+func ParseBody(r *http.Request) (map[string]interface{}, error) {
+	var b map[string]interface{} 
+
+	e := json.NewDecoder(r.Body).Decode(&b)
+
+	if e != nil {
+		return nil, e
+	}
+
+	return b, nil
 }

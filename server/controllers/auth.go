@@ -49,9 +49,9 @@ func LogUserIn(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
-	var body map[string]interface{}
+	body, e := apputils.ParseBody(r)
 	
-	if e := json.NewDecoder(r.Body).Decode(&body); e != nil {
+	if e != nil {
 		w.WriteHeader(500)
 		return
 	}
