@@ -56,22 +56,29 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if e := data.DB.Where("email = ?", user.Email).First(&user).Error; e == nil {
+		w.WriteHeader(401) 
+		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Account with email already exists"})
+		return
+	} 
+
 	if e := validator.New().Struct(user); e != nil {
 		w.WriteHeader(401) 
-		fmt.Println(e.Error())
 		json.NewEncoder(w).Encode(map[string]interface{}{"errors": ""})
+		return
+	} 
+
+	if hash, e := bcrypt.GenerateFromPassword([]byte(user.Password), 10); e != nil {
+		w.WriteHeader(500)
 	} else {
-		if hash, e := bcrypt.GenerateFromPassword([]byte(user.Password), 10); e != nil {
+		user.Password = string(hash)
+		
+		if e := data.DB.Create(&user).Error; e != nil {
 			w.WriteHeader(500)
-		} else {
-			user.Password = string(hash)
-			
-			if e := data.DB.Create(&user).Error; e != nil {
-				w.WriteHeader(500)
-			} else {
-				json.NewEncoder(w).Encode(map[string]interface{}{"message": "Registration successful"})
-			}
+			return
 		}
+		
+		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Registration successful"})
 	}
 }
 
