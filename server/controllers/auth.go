@@ -76,9 +76,8 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogUserOut(w http.ResponseWriter, r *http.Request) {
-	jti := apputils.GetTokenJTI(r)
 	jwtStr := apputils.GetTokenRaw(r)
-	k := fmt.Sprintf("token.%d.%s", jti, jwtStr)
+	k := fmt.Sprintf("token.%s", jwtStr)
 
 	if _, e := data.RS.SetEX(context.Background(), k, "", 24*time.Hour).Result(); e != nil {
 		w.WriteHeader(500)
