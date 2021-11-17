@@ -54,7 +54,7 @@ const Timer = () => {
         setRunning(false);
         setTime(t[0].duration); 
     }
-
+ 
     const handleModeChange = (newMode, newDuration) => { 
         if(running) {
             const isConfirmed = window.confirm("The timer is still running, are you sure you want to move onto the next round?");
