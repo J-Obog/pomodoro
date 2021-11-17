@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .auth-form-modal {
+        @apply bg-white w-2/5 px-16 py-8 rounded-xl flex flex-col items-center justify-center; 
+    }
+
+    .auth-form-input {
+        @apply w-full outline-none border-b-2;
+    }
+
+    .auth-form-input-error {
+        @apply text-red-500 text-sm text-center;
+    }
+
+    .auth-form-submit-btn {
+        @apply bg-red-500 py-1 px-3 text-white text-xl rounded-lg w-full;
+    }
+}

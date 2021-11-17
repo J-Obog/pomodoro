@@ -19,26 +19,25 @@ const Register = () => {
 
     return (
         <div className="flex items-center justify-center h-screen">
-            <div className="bg-white w-2/5 px-16 py-8 rounded-xl flex flex-col items-center justify-center">
+            <div className="auth-form-modal">
                 <div className="mb-16">
                     <h1 className="text-4xl font-bold">Pomodoro</h1>
                 </div>
                 <div className="mb-10 w-full">
                     <div className="mb-10">
                         <input onInput={e => {setEmail(e.target.value)}}
-                            placeholder="Email" className="w-full outline-none border-b-2"/>
+                            placeholder="Email" className="auth-form-input"/>
                     </div>
                     <div>
                         <input onInput={e => {setPassword(e.target.value)}}
-                            type="password" placeholder="Password" className="w-full outline-none border-b-2"/>
+                            type="password" placeholder="Password" className="auth-form-input"/>
                     </div>
                 </div>
                 <div className="text-sm mb-12">
                     <Link to="/login">Already have an account? <b>Log In</b></Link>
                 </div>
                 <div className="mb-6 w-full">
-                    <button onClick={attemptRegistration} 
-                    className="bg-red-500 py-1 px-3 text-white text-xl rounded-lg w-full">Sign Up</button>
+                    <button onClick={attemptRegistration} className="auth-form-submit-btn">Sign Up</button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { React } from 'react'; 
-import TaskList from '../components/Task/TaskList'; 
-import Timer from '../components/Timer/Timer'; 
+import { TaskList } from '../components/Task'; 
+import { Timer } from '../components/Timer'; 
 
 
 const Dashboard = () => {    
