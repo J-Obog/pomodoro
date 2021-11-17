@@ -1,21 +1,21 @@
-import { React, useState } from 'react'; 
+import { React, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; 
+import axios from 'axios';
 
 const Register = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    //const [error, setError] = useState(null); 
+    //const [error, setError] = useState(null);
 
     const attemptRegistration = async () => {
         try {
-            await axios.post(process.env.REACT_APP_API_URL + '/auth/register', { email: email, password: password});
+            await axios.post(process.env.REACT_APP_API_URL + '/auth/register', { email: email, password: password });
             navigate('/login');
-        } catch({response}) {
-            //handle errors 
+        } catch ({ response }) {
+            //handle errors
         }
-    }
+    };
 
     return (
         <div className="flex items-center justify-center h-screen">
@@ -25,23 +25,38 @@ const Register = () => {
                 </div>
                 <div className="mb-10 w-full">
                     <div className="mb-10">
-                        <input onInput={e => {setEmail(e.target.value)}}
-                            placeholder="Email" className="auth-form-input"/>
+                        <input
+                            onInput={(e) => {
+                                setEmail(e.target.value);
+                            }}
+                            placeholder="Email"
+                            className="auth-form-input"
+                        />
                     </div>
                     <div>
-                        <input onInput={e => {setPassword(e.target.value)}}
-                            type="password" placeholder="Password" className="auth-form-input"/>
+                        <input
+                            onInput={(e) => {
+                                setPassword(e.target.value);
+                            }}
+                            type="password"
+                            placeholder="Password"
+                            className="auth-form-input"
+                        />
                     </div>
                 </div>
                 <div className="text-sm mb-12">
-                    <Link to="/login">Already have an account? <b>Log In</b></Link>
+                    <Link to="/login">
+                        Already have an account? <b>Log In</b>
+                    </Link>
                 </div>
                 <div className="mb-6 w-full">
-                    <button onClick={attemptRegistration} className="auth-form-submit-btn">Sign Up</button>
+                    <button onClick={attemptRegistration} className="auth-form-submit-btn">
+                        Sign Up
+                    </button>
                 </div>
             </div>
         </div>
-    )
-}; 
+    );
+};
 
-export default Register; 
+export default Register;
