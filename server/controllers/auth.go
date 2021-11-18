@@ -64,7 +64,11 @@ func RegisterNewUser(w http.ResponseWriter, r *http.Request) {
 	if hash, e := bcrypt.GenerateFromPassword([]byte(body["password"].(string)), 10); e != nil {
 		w.WriteHeader(500)
 	} else {
-		var user = models.User{ Email: body["email"].(string), Password: string(hash), }
+		var user = models.User{ 
+			Email: body["email"].(string), 
+			Password: string(hash),
+			JoinedAt: time.Now(), 
+		}
 
 		if e := data.DB.Create(&user).Error; e != nil {
 			w.WriteHeader(500)

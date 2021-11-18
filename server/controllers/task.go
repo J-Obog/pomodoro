@@ -3,10 +3,12 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/J-Obog/pomodoro/apputils"
 	"github.com/J-Obog/pomodoro/data"
 	"github.com/J-Obog/pomodoro/models"
+	"github.com/J-Obog/pomodoro/validators"
 	"github.com/gorilla/mux"
 )
 
@@ -20,7 +22,17 @@ func CreateNewTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var task = models.Task{ UserID: jti, Title: body["title"].(string), }
+	if e := validators.ValidateNewTask(body); e != nil {
+		w.WriteHeader(401)
+		json.NewEncoder(w).Encode(map[string]interface{}{"errors": e})
+		return
+	}
+
+	var task = models.Task{ 
+		UserID: jti, 
+		Title: body["title"].(string),
+		CreatedAt: time.Now(),
+	}
 
 	if e := data.DB.Create(&task).Error; e != nil {
 		w.WriteHeader(500)
