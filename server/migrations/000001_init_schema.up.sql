@@ -7,6 +7,5 @@ CREATE TABLE users (
 CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
-    completed BOOLEAN NOT NULL DEFAULT FALSE,
     title VARCHAR NOT NULL
 );

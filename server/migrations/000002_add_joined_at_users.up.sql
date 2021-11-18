@@ -1,2 +1,2 @@
 ALTER TABLE users
-ADD joined_at TIMESTAMP;
+ADD joined_at TIMESTAMP NOT NULL DEFAULT NOW();
