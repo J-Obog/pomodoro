@@ -52,8 +52,8 @@ const TaskList = () => {
                 <input onKeyPress={addTask} maxLength={30} placeholder="New Task" className="w-full bg-transparent outline-none border-b-2 border-gray-300" />
             </div>
             <div>
-                {tasks.map((task) => (
-                    <Task key={task.id} {...task} dispatchDelete={handleDelete} dispatchEdit={handleEdit} />
+                {tasks.map((t) => (
+                    <Task key={t.id} {...t} dispatchDelete={handleDelete} dispatchEdit={handleEdit} />
                 ))}
             </div>
         </div>

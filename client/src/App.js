@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import { PublicRoute, PrivateRoute } from './components/Common';
+import { PublicRoute, PrivateRoute } from './components/common';
 import { Dashboard, Metrics, Login, Register } from './pages';
 
 import Auth from './context/AuthContext';

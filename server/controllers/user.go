@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -60,7 +61,7 @@ func GetUserMetrics(w http.ResponseWriter, r *http.Request) {
 		"metrics": []map[string]interface{}{
 			{"metric": "Total Tasks Created", "value": len(tasks)},
 			{"metric": "Total Tasks Completed", "value": tasks_completed},
-			{"metric": "Task Completion Rate", "value": float64(tasks_completed) / float64(len(tasks))}, 
+			{"metric": "Task Completion Rate", "value": fmt.Sprintf("%f%%", (float64(tasks_completed) / float64(len(tasks))) * 100)}, 
 		},
 		"tasks_by_day": groups, 
 	})
