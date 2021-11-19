@@ -60,7 +60,7 @@ func GetUserMetrics(w http.ResponseWriter, r *http.Request) {
 		"metrics": []map[string]interface{}{
 			{"metric": "Total Tasks Created", "value": len(tasks)},
 			{"metric": "Total Tasks Completed", "value": tasks_completed},
-			{"metric": "Task Completion Rate", "value": tasks_completed/len(tasks)}, 
+			{"metric": "Task Completion Rate", "value": float64(tasks_completed) / float64(len(tasks))}, 
 		},
 		"tasks_by_day": groups, 
 	})

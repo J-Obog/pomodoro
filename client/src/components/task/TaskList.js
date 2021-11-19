@@ -29,9 +29,9 @@ const TaskList = () => {
         }
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = (data) => {
         const newList = tasks.filter((task) => {
-            return task.id !== id;
+            return task.id !== data.id;
         });
         setTasks(newList);
     };

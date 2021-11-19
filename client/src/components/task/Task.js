@@ -4,14 +4,14 @@ import { AuthContext } from '../../context/AuthContext';
 
 const Task = (props) => {
     const { access } = useContext(AuthContext);
-    const [completed, setCompletion] = useState(props.completed);
+    const [completed, setCompletion] = useState(props.completed_at);
     const [title, setTitle] = useState(props.title);
     //const [editing, setEditing] = useState(false);
 
     const deleteTask = async () => {
         try {
             const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/task/${props.id}`, { headers: { Authorization: access } });
-            props.dispatchDelete(data.id);
+            props.dispatchDelete(data);
         } catch (err) {}
     };
 
