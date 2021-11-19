@@ -6,6 +6,7 @@ module.exports = {
       fontFamily: {
         "space-mono": ['"Space Mono"', "monospace"],
         "roboto-cond": ['"Roboto Condensed"', "sans-serif"],
+        quicksand: ['"Quicksand"', "sans-serif"],
       },
     },
   },

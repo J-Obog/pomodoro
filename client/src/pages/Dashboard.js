@@ -4,7 +4,7 @@ import { Timer } from '../components/timer';
 
 const Dashboard = () => {
     return (
-        <div className="flex flex-row items-start py-10">
+        <div className="flex flex-row items-start p-10">
             <div className="w-4/6">
                 <Timer />
             </div>

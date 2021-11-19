@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/J-Obog/pomodoro/apputils"
@@ -55,15 +56,19 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 }	
 
 func RemoveTask(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]	
-	var task models.Task
+	id, e := strconv.ParseUint(mux.Vars(r)["id"], 10, 64)
 
-	if e := data.DB.Delete(&task, id).Error; e != nil {
+	if e != nil {
+		w.WriteHeader(402)
+		return
+	}
+
+	if e := data.DB.Delete(&models.Task{}, id).Error; e != nil {
 		w.WriteHeader(500)
 		return
 	}
 
-	json.NewEncoder(w).Encode(task)
+	json.NewEncoder(w).Encode(map[string]interface{}{"id": id})
 }
 
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
