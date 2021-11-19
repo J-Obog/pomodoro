@@ -1,15 +1,16 @@
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false,
   theme: {
     extend: {
       fontFamily: {
-        'space-mono': ['"Space Mono"', 'monospace']
-      }
+        "space-mono": ['"Space Mono"', "monospace"],
+        "roboto-cond": ['"Roboto Condensed"', "sans-serif"],
+      },
     },
   },
   variants: {
     extend: {},
   },
   plugins: [],
-}
+};

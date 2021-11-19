@@ -32,13 +32,9 @@ const Timer = () => {
 
     useEffect(() => {
         const invId = setInterval(() => {
-            if (running && time > 0) {
-                setTime(time - 1);
-            }
+            if (running && time > 0) setTime(time - 1);
 
-            if (time === 0) {
-                setRunning(false);
-            }
+            if (time === 0) setRunning(false);
         }, 1000);
         return () => {
             clearInterval(invId);
@@ -53,6 +49,7 @@ const Timer = () => {
         const t = timerModes.filter((m) => {
             return m.name === currentMode;
         });
+
         setRunning(false);
         setTime(t[0].duration);
     };
@@ -77,16 +74,10 @@ const Timer = () => {
             <div className="shadow-md bg-white border border-gray-200 w-3/5 px-0 rounded-xl flex flex-col items-center justify-center m-3">
                 <div className="w-full flex flex-row">
                     {timerModes.map((mode) => (
-                        <TimerMode
-                            key={mode.name}
-                            {...mode}
-                            w={`1/${timerModes.length}`}
-                            active={mode.name === currentMode ? true : false}
-                            dispatchModeChange={handleModeChange}
-                        />
+                        <TimerMode key={mode.name} {...mode} w={`1/${timerModes.length}`} active={mode.name === currentMode ? true : false} dispatchModeChange={handleModeChange} />
                     ))}
                 </div>
-                <div className={`bg-gray-100 w-full text-center text-${time <= 60 ? 'red-400' : 'gray-600'} text-7xl p-10`}>
+                <div className={`bg-gray-100 w-full text-center text-${time <= 60 ? 'red-400' : 'gray-600'} text-8xl p-10`}>
                     <span>{parseInt(time / 60)}</span>|
                     <span>
                         {time % 60 < 10 ? '0' : ''}

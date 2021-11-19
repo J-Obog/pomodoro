@@ -10,7 +10,10 @@ const Register = () => {
 
     const attemptRegistration = async () => {
         try {
-            await axios.post(process.env.REACT_APP_API_URL + '/auth/register', { email: email, password: password });
+            await axios.post(process.env.REACT_APP_API_URL + '/auth/register', {
+                email: email,
+                password: password,
+            });
             navigate('/login');
         } catch ({ response }) {
             //handle errors
@@ -18,7 +21,7 @@ const Register = () => {
     };
 
     return (
-        <div className="flex items-center justify-center w-full">
+        <div className="flex h-full justify-center items-center">
             <div className="auth-form-modal">
                 <div className="mb-16">
                     <h1 className="text-4xl font-bold">Pomodoro</h1>

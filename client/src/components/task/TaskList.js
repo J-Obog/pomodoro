@@ -11,7 +11,6 @@ const TaskList = () => {
         axios
             .get(`${process.env.REACT_APP_API_URL}/task`, { headers: { Authorization: access } })
             .then(({ data }) => {
-                console.log(data);
                 setTasks(data);
             })
             .catch((err) => {});
@@ -46,8 +45,8 @@ const TaskList = () => {
 
     return (
         <div className="bg-gray-200 rounded-lg flex flex-col justify-around p-2">
-            <div className="text-gray-600 text-lg font-bold p-2 mb-8">
-                <h1>Task List 📝</h1>
+            <div className="text-gray-600 text-xl text-center font-bold p-2 mb-8">
+                <h1>Task List</h1>
             </div>
             <div className="mb-10">
                 <input onKeyPress={addTask} maxLength={30} placeholder="New Task" className="w-full bg-transparent outline-none border-b-2 border-gray-300" />

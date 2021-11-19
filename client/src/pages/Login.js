@@ -11,7 +11,10 @@ const Login = () => {
 
     const attemptLogin = async () => {
         try {
-            const { data } = await axios.post(process.env.REACT_APP_API_URL + '/auth/login', { email: email, password: password });
+            const { data } = await axios.post(process.env.REACT_APP_API_URL + '/auth/login', {
+                email: email,
+                password: password,
+            });
             login(data.access_token, data.refresh_token);
         } catch ({ response }) {
             setError(response.data);
@@ -25,7 +28,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center w-full">
+        <div className="flex h-full justify-center items-center">
             <div className="auth-form-modal">
                 <div className="mb-16">
                     <h1 className="text-4xl font-bold">Pomodoro</h1>

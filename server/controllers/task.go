@@ -39,11 +39,7 @@ func CreateNewTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 		
-	if res, e := json.Marshal(task); e != nil {
-		w.WriteHeader(500)
-	} else {
-		w.Write(res)
-	}
+	json.NewEncoder(w).Encode(task)
 }	
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
@@ -55,11 +51,7 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if res, e := json.Marshal(tasks); e != nil {
-			w.WriteHeader(500)
-	} else {
-			w.Write(res)
-	}
+	json.NewEncoder(w).Encode(tasks)
 }	
 
 func RemoveTask(w http.ResponseWriter, r *http.Request) {
@@ -71,17 +63,13 @@ func RemoveTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if res, e := json.Marshal(task); e != nil {
-		w.WriteHeader(500)
-	} else {
-		w.Write(res)
-	}
+	json.NewEncoder(w).Encode(task)
 }
 
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	body, e := apputils.ParseBody(r)
-	var task models.Task
 	id := mux.Vars(r)["id"]
+	var task models.Task
 
 	if e != nil {
 		w.WriteHeader(500)
@@ -93,9 +81,5 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	} 
 	
-	if res, e := json.Marshal(task); e != nil {
-		w.WriteHeader(500) 
-	} else {
-		w.Write(res)
-	}
+	json.NewEncoder(w).Encode(task)
 }
