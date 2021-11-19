@@ -12,4 +12,5 @@ func InitUserRouter(r *mux.Router) {
 	r.Use(apputils.JWTAuthMiddleware)
 
 	r.HandleFunc("/", controllers.GetUser).Methods("GET")
+	r.HandleFunc("/metrics", controllers.GetUserMetrics).Methods("GET")
 }

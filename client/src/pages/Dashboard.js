@@ -4,11 +4,11 @@ import { Timer } from '../components/Timer';
 
 const Dashboard = () => {
     return (
-        <div className="flex h-screen p-4">
-            <div className="flex flex-col items-center w-4/6 m-3">
+        <div className="flex flex-row items-start py-10 px-10">
+            <div className="w-4/6">
                 <Timer />
             </div>
-            <div className="flex flex-col w-2/6 m-3">
+            <div className="w-2/6">
                 <TaskList />
             </div>
         </div>

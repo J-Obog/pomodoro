@@ -11,6 +11,7 @@ const TaskList = () => {
         axios
             .get(`${process.env.REACT_APP_API_URL}/task`, { headers: { Authorization: access } })
             .then(({ data }) => {
+                console.log(data);
                 setTasks(data);
             })
             .catch((err) => {});
