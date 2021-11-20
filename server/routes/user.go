@@ -13,4 +13,5 @@ func InitUserRouter(r *mux.Router) {
 
 	r.HandleFunc("/", controllers.GetUser).Methods("GET")
 	r.HandleFunc("/metrics", controllers.GetUserMetrics).Methods("GET")
+	r.HandleFunc("/activity", controllers.GetTasksByDay).Methods("GET")
 }
