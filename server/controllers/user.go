@@ -65,7 +65,13 @@ func GetTasksByDay(w http.ResponseWriter, r *http.Request) {
 	jti := apputils.GetTokenJTI(r) 
 	var tasks []models.Task
 	var groups = map[string]int{}
-	groupDays := 7
+	var intervalMapper = map[string]int{"1w": 7}
+	interval := r.URL.Query().Get("interval")
+	
+	if _, ok := intervalMapper[interval]; !ok {
+		w.WriteHeader(400) 
+		return
+	}
 
 	if e := data.DB.Where(&models.Task{UserID: jti}).Find(&tasks).Error; e != nil {
 		w.WriteHeader(500) 
@@ -73,11 +79,11 @@ func GetTasksByDay(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	for _, v := range tasks {
-		b := time.Now().Add(time.Duration(-24 * groupDays) * time.Hour)
+		b := time.Now().Add(time.Duration(-24 * intervalMapper[interval]) * time.Hour)
 
 		if(v.CompletedAt != nil && (v.CompletedAt.Equal(b) || v.CompletedAt.After(b))) {
-			k := v.CompletedAt.Format("Jan-02-2006")
-			
+			k := v.CompletedAt.Format("01/02/2006")
+
 			if _, ok := groups[k]; ok {
 				groups[k]++
 			} else {

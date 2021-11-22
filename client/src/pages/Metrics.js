@@ -4,7 +4,7 @@ import { MetricList } from '../components/metrics';
 import Chart from 'react-google-charts';
 
 var arr = [['', 'Task Completed']];
-var days = 7;
+var days = 17;
 
 for (let i = days; i > 0; i--) {
     let d = new Date(new Date().getTime() - 24 * i * 3600 * 1000).toLocaleDateString();
